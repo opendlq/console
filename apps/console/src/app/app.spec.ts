@@ -8,11 +8,11 @@ describe('App', () => {
     await TestBed.configureTestingModule({ imports: [App], providers: [provideRouter(routes)] }).compileComponents();
   });
 
-  it('renders the shell with the Topics navigation', async () => {
+  it('renders the shell with the Failures navigation', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const el = fixture.nativeElement as HTMLElement;
     expect(el.querySelector('odlq-sidebar')).toBeTruthy();
-    expect(el.querySelector('a[routerLink="/topics"]')?.textContent).toContain('Topics');
+    expect(el.querySelector('a[routerLink="/failures"]')?.textContent).toContain('Failures');
   });
 });

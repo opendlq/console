@@ -3,7 +3,7 @@ import { FailuresStore } from '../failures/failures.store';
 import { BreakersStore } from './breakers.store';
 
 describe('BreakersStore', () => {
-  it('counts held messages per dependency and flags the breakers that are not closed', () => {
+  it('conta as mensagens retidas por dependência e destaca os breakers que não estão fechados', () => {
     const store = TestBed.inject(BreakersStore);
     const failures = TestBed.inject(FailuresStore);
     const held = (dep: string) => failures.messages().filter((m) => m.state === 'held' && m.dependency === dep).length;
@@ -13,7 +13,7 @@ describe('BreakersStore', () => {
     expect(store.needAttention().length).toBe(store.views().filter((v) => v.breaker.state !== 'closed').length);
   });
 
-  it('releases the held count when the messages leave the held state', () => {
+  it('zera as retidas quando as mensagens saem do estado held', () => {
     const store = TestBed.inject(BreakersStore);
     const failures = TestBed.inject(FailuresStore);
     const ids = failures.messages().filter((m) => m.state === 'held' && m.dependency === 'inventory-service').map((m) => m.id);

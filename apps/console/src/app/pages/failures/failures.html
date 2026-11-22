@@ -1,0 +1,35 @@
+<div class="page">
+  <odlq-page-header title="Failures" />
+
+  <odlq-state-strip [counts]="store.stateCounts()" [(selected)]="store.state" />
+  <odlq-filter-bar [(query)]="store.query" [active]="store.filtering()" placeholder="Search by cause, reason or dependency…" (clear)="store.clearFilters()">
+    <odlq-select [options]="consumers()" [(value)]="store.consumer" prefix="Consumer:" placeholder="All" label="Consumer" />
+    <odlq-select [options]="kinds" [(value)]="store.kind" prefix="Kind:" placeholder="All" label="Kind" />
+  </odlq-filter-bar>
+  <odlq-bulk-action-bar
+    [count]="list.selection().length"
+    noun="cause(s)"
+    [editable]="false"
+    (replay)="replayOpen.set(true)"
+    (reclassify)="reclassifyOpen.set(true)"
+    (discard)="discardOpen.set(true)"
+    (cleared)="list.selection.set([])"
+  />
+  <odlq-group-table [groups]="store.visibleGroups()" [(selection)]="list.selection" (groupClick)="open($event)" />
+</div>
+
+<odlq-replay-drawer [(open)]="replayOpen" [messages]="list.messages()" [targets]="targets()" placement="container" (replay)="replay($event)" />
+<odlq-reclassify-dialog
+  [(open)]="reclassifyOpen"
+  [count]="list.messageCount()"
+  noun="messages"
+  [current]="list.dominantKind()"
+  (reclassify)="reclassify($event)"
+/>
+<odlq-confirm-dialog
+  [(open)]="discardOpen"
+  heading="Discard messages"
+  confirmLabel="Discard"
+  [message]="'Discard ' + list.messageCount() + ' message(s)? They are closed with a recorded reason and are no longer retried or replayed.'"
+  (confirmed)="discard()"
+/>

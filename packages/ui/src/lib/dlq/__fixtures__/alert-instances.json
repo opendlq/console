@@ -1,0 +1,34 @@
+[
+  {
+    "id": "ai1",
+    "alert": "circuit-open-too-long",
+    "subject": "inventory-service",
+    "status": "pending",
+    "at": "2026-11-22 11:43:00",
+    "summary": "Circuit open for 47 min. 4 messages held. Next probe in 45s."
+  },
+  {
+    "id": "ai2",
+    "alert": "new-permanent-group",
+    "subject": "schema-amount-type",
+    "status": "sent",
+    "at": "2026-11-22 05:05:00",
+    "summary": "7 messages in the first hour. Sample: \"$.amount: string found, number expected\". No runbook."
+  },
+  {
+    "id": "ai3",
+    "alert": "inflow-anomaly",
+    "subject": "payment-events",
+    "status": "sent",
+    "at": "2026-11-22 05:40:00",
+    "summary": "Inflow 3.4σ above the usual for this hour of the week."
+  },
+  {
+    "id": "ai4",
+    "alert": "runbook-expiring",
+    "subject": "drop-test-tenant",
+    "status": "pending",
+    "at": "2026-11-22 11:55:00",
+    "summary": "Expires in 13 days. It handled 2,904 messages in the last 7 days."
+  }
+]

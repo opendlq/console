@@ -19,7 +19,7 @@ apps/console/src/app/pages/<nome>/
 - Sem sufixo `.component`. Seletor `odlq-<nome>-page`, classe `<Nome>Page`.
 - **Nunca** `template:` / `styles:` inline em página: use `templateUrl: './<nome>.html'` e `styleUrl: './<nome>.css'`.
 - `changeDetection: ChangeDetectionStrategy.OnPush`, `@if`/`@for`, `input()`/`output()`/`signal()`.
-- **Não crie `*.spec.ts` para páginas.** Teste fica no módulo.
+- **Não crie `*.spec.ts` para páginas.** Teste de lógica fica no módulo; fluxo que dispara request fica no Playwright (`opendlq-e2e`). Arquitetura e dependências: `opendlq-architecture`.
 
 ## Onde fica cada coisa
 
@@ -35,8 +35,8 @@ Regra de bolso: se dá para testar sem DOM, vai para o módulo; se depende de `R
 
 ## Passo a passo
 
-1. **Módulo** (se ainda não existir): `packages/modules/src/<modulo>/<modulo>.store.ts` com `@Injectable` e signals (`signal`, `computed`), métodos puros que devolvem o resultado (ex.: `reprocessSelected(): number`). Exporte em `packages/modules/src/public-api.ts`. Estado por tela: sem `providedIn: 'root'` e use `providers: [Store]` na página; estado global: `providedIn: 'root'`.
-2. **Teste** do módulo em `<modulo>.store.spec.ts` (vitest globals; `new Store()` basta, sem TestBed). Cubra ramos e bordas, não getters triviais.
+1. **Módulo** (se ainda não existir): siga `opendlq-module` (store com signals, fixture, `public-api.ts`). Estado por tela: sem `providedIn: 'root'` e `providers: [Store]` na página; estado global: `providedIn: 'root'`.
+2. **Teste** do módulo em `<modulo>.store.spec.ts`, também em `opendlq-module`.
 3. **Página**: crie a pasta com `.ts`, `.html`, `.css`.
    - `.ts`: `inject(Store)` como `protected readonly store`, `imports` só do que o `.html` usa.
    - `.html`: bind direto na store (`[(value)]="store.query"`, `store.rows()`, `(filterRemoved)="store.removeFilter($event)"`). Sem lógica além de chamadas.

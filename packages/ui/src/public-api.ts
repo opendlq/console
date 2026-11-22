@@ -55,7 +55,6 @@ export * from './lib/code/code-line';
 export * from './lib/code/code-block';
 export * from './lib/code/code-editor';
 export * from './lib/code/diff-viewer';
-export * from './lib/mocks';
 
 // Overlays
 export * from './lib/drawer/drawer';

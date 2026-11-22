@@ -1,0 +1,22 @@
+<div class="page">
+  <odlq-page-header title="Runbooks" />
+
+  @for (r of store.expiringSoon(); track r.name) {
+    <odlq-alert tone="warning" [heading]="'Runbook expiring: ' + r.name">
+      It stops on {{ r.expires }}. Renew it, or fix the root cause so the failures stop coming back.
+    </odlq-alert>
+  }
+
+  <odlq-kpi-row>
+    <odlq-kpi-card label="Automatic" [value]="store.byStatus().automatic" tone="success" />
+    <odlq-kpi-card label="Supervised" [value]="store.byStatus().supervised" tone="warning" hint="waiting for approvals" />
+    <odlq-kpi-card label="Suggested" [value]="store.byStatus().suggested" tone="primary" hint="same action applied 3 times" />
+    <odlq-kpi-card label="Expired" [value]="store.byStatus().expired" tone="danger" />
+  </odlq-kpi-row>
+
+  <div class="cards">
+    @for (r of store.runbooks(); track r.name) {
+      <odlq-runbook-card [runbook]="r" [pending]="store.pending(r.name)" (approve)="approve(r.name)" (reject)="reject(r.name)" />
+    }
+  </div>
+</div>

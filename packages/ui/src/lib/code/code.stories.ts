@@ -1,15 +1,23 @@
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
-import { CONNECTOR_CONFIG, DLQ_MESSAGES, JS_FILTER_PLACEHOLDER, SCHEMA_V3, SCHEMA_V4, TOPIC_CONFIG_RAW } from '../mocks';
+import resources from '../dlq/__fixtures__/config-resources.json';
+import messages from '../dlq/__fixtures__/failure-messages.json';
+import { prettyPayload, type ConfigResource, type DlqMessage } from '../domain';
 import { OdlqCodeBlock } from './code-block';
 import { OdlqCodeEditor } from './code-editor';
 import { OdlqDiffViewer } from './diff-viewer';
+
+const RESOURCES = resources as ConfigResource[];
+const JSON_PAYLOAD = prettyPayload((messages as DlqMessage[]).find((m) => m.payload.startsWith('{'))!.payload);
+
+const BEFORE = '{\n  "currency": "EUR",\n  "amount": "1 014 551",\n  "transaction_date": "21/06/2022"\n}';
+const AFTER = '{\n  "currency": "EUR",\n  "amount": 1014551,\n  "transaction_date": "2022-06-21"\n}';
 
 const meta: Meta<OdlqCodeBlock> = {
   title: 'Dados/Código (block, editor, diff)',
   component: OdlqCodeBlock,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [OdlqCodeBlock, OdlqCodeEditor, OdlqDiffViewer] })],
-  args: { code: DLQ_MESSAGES[0].value, language: 'json', lineNumbers: true, copyable: true },
+  args: { code: JSON_PAYLOAD, language: 'json', lineNumbers: true, copyable: true },
   argTypes: { language: { control: 'inline-radio', options: ['json', 'properties', 'js', 'text'] } },
   render: (args) => ({
     props: args,
@@ -22,40 +30,40 @@ type Story = StoryObj<OdlqCodeBlock>;
 export const Json: Story = {};
 
 export const Properties: Story = {
-  name: 'Properties (raw view)',
-  args: { code: TOPIC_CONFIG_RAW, language: 'properties' },
+  name: 'Recurso YAML (Policy)',
+  args: { code: RESOURCES[1].yaml, language: 'properties' },
 };
 
-export const Connector: Story = {
-  name: 'Config do connector',
-  args: { code: CONNECTOR_CONFIG, language: 'json' },
+export const Runbook: Story = {
+  name: 'Recurso YAML (Runbook)',
+  args: { code: RESOURCES[2].yaml, language: 'properties' },
 };
 
 export const Editor: Story = {
-  name: 'Editor (JS filter)',
+  name: 'Editor (payload)',
   render: () => ({
-    props: { code: '' },
+    props: { code: JSON_PAYLOAD },
     template: `
       <div style="max-width:520px;display:grid;gap:8px">
-        <odlq-code-editor [(value)]="code" [rows]="6" language="js" label="Filter code" placeholder='${JS_FILTER_PLACEHOLDER}' />
+        <odlq-code-editor [(value)]="code" [rows]="8" language="json" label="Payload" />
         <small style="color:var(--ui-text-muted)">{{ code.length }} caracteres</small>
       </div>`,
   }),
 };
 
-export const EditorComValor: Story = {
-  name: 'Editor com valor e linhas',
+export const EditorComLinhas: Story = {
+  name: 'Editor com números de linha',
   render: () => ({
-    props: { code: 'const city = record.value.Address.City\nreturn city.startsWith("Pa") // Paris, Palermo\n' },
-    template: `<odlq-code-editor [(value)]="code" [rows]="6" [lineNumbers]="true" language="js" style="max-width:520px" />`,
+    props: { code: JSON_PAYLOAD },
+    template: `<odlq-code-editor [(value)]="code" [rows]="8" [lineNumbers]="true" language="json" style="max-width:520px" />`,
   }),
 };
 
 export const Diff: Story = {
-  name: 'Diff de schema',
+  name: 'Diff de payload (editar e reenviar)',
   parameters: { layout: 'padded' },
   render: () => ({
-    props: { a: SCHEMA_V3, b: SCHEMA_V4 },
-    template: `<odlq-diff-viewer [left]="a" [right]="b" leftTitle="Version 3 (current)" rightTitle="Version 4" leftMeta="Schema ID: 100123" rightMeta="Schema ID: 100124" />`,
+    props: { a: BEFORE, b: AFTER },
+    template: `<odlq-diff-viewer [left]="a" [right]="b" leftTitle="Original payload" rightTitle="Edited payload" leftMeta="x-dlq-id: 0f3a9c12" rightMeta="Replays under the same id" />`,
   }),
 };

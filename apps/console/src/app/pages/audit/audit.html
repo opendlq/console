@@ -1,0 +1,10 @@
+<div class="page">
+  <odlq-page-header title="Audit log">
+    <odlq-segmented-control actions [options]="actors" [value]="selected()" (valueChange)="select($event)" size="sm" label="Actor" />
+  </odlq-page-header>
+
+  <odlq-alert tone="info" heading="Never purged">
+    Every state change is recorded in the same transaction as the change, with who, what, when and the result.
+  </odlq-alert>
+  <odlq-audit-log [entries]="store.visible()" />
+</div>

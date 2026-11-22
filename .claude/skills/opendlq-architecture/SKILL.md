@@ -1,6 +1,6 @@
 ---
 name: opendlq-architecture
-description: Arquitetura do workspace OpenDLQ (apps/console, packages/ui, packages/modules, packages/core). Use ao decidir ONDE um código deve ficar, ao criar/mover arquivos entre packages, ao revisar imports entre packages, ao lidar com dados de exemplo (__fixtures__) ou ao criar o packages/core. Para páginas use opendlq-page, para features opendlq-module, para componentes opendlq-ui-component.
+description: Arquitetura do workspace OpenDLQ (apps/console, packages/ui, packages/modules, packages/core). Use ao decidir ONDE um código deve ficar, ao criar/mover arquivos entre packages, ao revisar imports entre packages, ao lidar com dados de exemplo (__fixtures__), com o modo fixtures/http ou ao criar o packages/core. Para páginas use opendlq-page, features opendlq-module, componentes opendlq-ui-component, testes Playwright opendlq-e2e.
 ---
 
 # Arquitetura do OpenDLQ
@@ -39,24 +39,43 @@ packages/ui     componentes + Storybook, sem conhecer dados            @opendlq/
 | Estado, filtros, ações, regras de negócio, testes | `packages/modules/src/<modulo>/` | `opendlq-module` |
 | Chamada HTTP, config, storage, auth, DTOs | `packages/core/src/<recurso>/` (quando existir) | esta skill |
 | Rota, template da tela, toast, navegação | `apps/console/src/app/pages/<nome>/` | `opendlq-page` |
+| Teste Playwright (um por request) | `apps/console/e2e/` | `opendlq-e2e` |
 | Dados de exemplo | `__fixtures__/` ao lado de quem usa | esta skill |
 
 Regra de bolso: se dá para testar sem DOM, vai para o módulo; se depende de `Router`, `document` ou toast, fica na página; se só desenha, vai para `ui`.
 
-## Dados de exemplo: `__fixtures__`
+## Dados: fixtures ↔ request real
 
-Enquanto `packages/core` não existe, os dados vêm de fixtures.
+O alvo é **alternar** entre fixture e request real sem mudar service, store, página nem teste. Duas fases:
 
-- Pasta `__fixtures__/` **ao lado do código que as consome**: `packages/modules/src/<modulo>/__fixtures__/<nome>.fixture.ts` (dados de tela) e `packages/ui/src/lib/<nome>/__fixtures__/` (só para stories).
-- Constantes `UPPER_SNAKE` (`DLQ_TOPICS`), **determinísticas**: sem `Math.random()`, sem `Date.now()`. Use um "agora" fixo (ver `MOCK_NOW` em `packages/ui/src/lib/mocks.ts`).
-- Fixture guarda **dados**, não tipos. O tipo fica no store ou em `<modulo>.types.ts`.
-- **Nunca** exporte fixtures no `public-api.ts`. Quem precisa do dado usa a store.
-- A store lê a fixture num único ponto, o estado inicial, e marca a emenda:
+**Fase 1 (hoje, sem `core`)**: a store lê a fixture do próprio módulo (ver `opendlq-module`).
+
+**Fase 2 (com `core`)**: toda request passa por `HttpClient`/`httpResource` num service do `core`. O **modo** só decide quem responde:
+
+| Modo | Quem responde | Para quê |
+|---|---|---|
+| `fixtures` | interceptor do `core` devolve a fixture (`'GET /topics'` → corpo) | dev sem backend, Playwright determinístico |
+| `http` | rede real (`OPENDLQ_API_URL`) | dev contra o backend, Playwright de integração |
+
+- O modo vem de **configuração de build** do console (`fixtures` e `http` em `angular.json`, via `define` ou `fileReplacements`) e chega por `provideOpendlqCore({ mode })`. Interceptor e fixtures só entram no bundle do modo `fixtures`: nenhum mock em produção.
+- Um único service por recurso e uma única forma de chamar. Nenhuma camada acima do `core` conhece o modo.
+- Rotas de fixture: **um único** `packages/core/src/fixtures.ts` importa os `.json` e mapeia `'METHOD /path'` → JSON (`{ 'GET /topics': topics }`). Sem handler por recurso e sem lógica.
+- **Toda request nasce com fixture JSON, entrada nessa tabela e teste Playwright** (ver `opendlq-e2e`).
+
+### Regras das fixtures (valem nas duas fases)
+
+- **Dados ficam sempre em `.json`**, em `__fixtures__/` ao lado de quem consome: `packages/modules/src/<modulo>/__fixtures__/<nome>.json` (fase 1), `packages/core/src/<recurso>/__fixtures__/` (fase 2) e `packages/ui/src/lib/<nome>/__fixtures__/` (só stories). O nome diz o que tem (`failure-messages.json`, não `data.json`).
+- **Nenhum `.ts` dentro de `__fixtures__/`.** Sem gerador, sem `Math.random()`, sem sorteio com semente (`lcg`), sem helper de data (`ts(minAgo)`), sem `Date.now()`. Valor calculado vira valor escrito: data absoluta (`"2026-11-22 11:13:00"`; "agora" = 2026-11-22 12:00 UTC), id e payload literais.
+- JSON pequeno o bastante para **ler**: dezenas de registros por arquivo, não centenas. Mais variedade = outro arquivo.
+- Fixture guarda **só dado**. Derivado (grupos, funil, histórico) é calculado por função em `domain.ts`/store a partir do JSON.
+- O tipo vem do consumidor, num único ponto, com cast (compila com o `tsconfig` atual, sem `resolveJsonModule`):
   ```ts
+  import topics from './__fixtures__/topics.json';
+
   // ponytail: fixture; troque por inject(<Recurso>Service) do @opendlq/core quando existir.
-  readonly topics = signal<DlqTopic[]>(DLQ_TOPICS);
+  readonly topics = signal(topics as DlqTopic[]);
   ```
-- Um package **não** importa fixture de outro (hoje `modules` importa `DLQ_MESSAGES` de `ui`: ver dívida).
+- **Nunca** exporte fixture no `public-api.ts`; um package **não** importa fixture de outro.
 
 ## Quando criar `packages/core`
 
@@ -68,11 +87,12 @@ Só quando a primeira store precisar de dado real. Espelhe `packages/modules`:
 4. `package.json` raiz: acrescentar `ng build core` antes de `modules` em `build`, e `ng test core --watch=false` em `test`.
 5. `modules/package.json` e `apps/console/package.json`: dependência `"@opendlq/core": "workspace:*"`.
 6. Conteúdo: services `@Injectable({ providedIn: 'root' })`, `inject()` (não construtor), `HttpClient`/`httpResource`, config por `InjectionToken`, DTOs tipados. Nada de estado de tela (isso é da store).
-7. Migrar: a store troca `signal(FIXTURE)` por `inject(Service)`; a fixture vira dado de spec/story.
+7. Modo: `provideOpendlqCore({ mode })` registra o interceptor de fixtures **só** em `mode: 'fixtures'`; as fixtures da fase 1 migram para `core/src/<recurso>/__fixtures__/` como handlers.
+8. Configurações de build `fixtures` e `http` no console e scripts `dev:fixtures` / `dev:http` no `package.json` raiz.
+9. Migrar a store: troca `signal(FIXTURE)` por `inject(Service)` e ganha `loading`/`error`. Playwright segue `opendlq-e2e`.
 
 ## Dívida conhecida (não replicar)
 
-- `packages/ui/src/lib/mocks.ts` é exportado pelo `public-api.ts` e `topic-messages.store.ts` importa `DLQ_MESSAGES` dele. Destino: mocks de ui só para stories (`__fixtures__`, fora do `public-api`); a store do módulo usa a própria fixture.
-- `packages/modules/src/topics/topics.data.ts` mistura tipo (`DlqTopic`) e dado (`DLQ_TOPICS`) e é exportado no `public-api.ts`. Destino: tipo no store/`topics.types.ts`, dado em `topics/__fixtures__/topics.fixture.ts`.
+- Os `__fixtures__/*.fixture.ts` atuais (`ui/src/lib/dlq/__fixtures__/dlq.fixture.ts`, `modules/src/failures/__fixtures__/failures.fixture.ts`, `modules/src/__fixtures__/time.ts` e os de `audit`, `recovery`, `runbooks`) ainda são TypeScript com gerador (`lcg`, `hex`, `between`, `ts`), e o mesmo gerador está duplicado em `ui` e `modules`. Destino: JSON puro e nenhum `.ts` em `__fixtures__/` (regras acima).
 
 Ao tocar nesses arquivos, migre; ao criar novos, siga a regra.

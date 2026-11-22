@@ -13,7 +13,7 @@ Componente é **só apresentação**: recebe por `input()`, emite por `output()`
 packages/ui/src/lib/<nome>/
 ├─ <nome>.ts             # componente (template e estilos INLINE, diferente das páginas)
 ├─ <nome>.stories.ts     # story obrigatória
-└─ __fixtures__/         # só se a story precisar de dados (não exporte no public-api)
+└─ __fixtures__/*.json   # só se a story precisar de dados: JSON, nenhum .ts, fora do public-api
 ```
 
 Exemplo de referência: `button/button.ts` + `button/button.stories.ts`.
@@ -52,7 +52,7 @@ export const Primary: StoryObj<OdlqButton> = {};
 ```
 
 - Uma story para o caso padrão e outra para as variações/estados (`Variantes`, `ComIcone`, desabilitado, carregando, vazio).
-- Dados da story saem de `__fixtures__` determinístico, nunca de `Math.random()`.
+- Dados da story saem de `__fixtures__/*.json` (`import msgs from './__fixtures__/x.json'` + cast `as DlqMessage[]`), nunca de `Math.random()` nem de gerador em TS.
 - O addon a11y está ligado: resolva os avisos do painel.
 
 ## Export

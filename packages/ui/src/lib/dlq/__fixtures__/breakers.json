@@ -1,0 +1,46 @@
+[
+  {
+    "dependency": "inventory-service",
+    "consumer": "order-events",
+    "state": "open",
+    "windowFailures": 34,
+    "threshold": 20,
+    "windowSec": 60,
+    "openedMin": 47,
+    "probe": {
+      "type": "canary",
+      "everySec": 120,
+      "nextInSec": 45
+    },
+    "drainRate": 50
+  },
+  {
+    "dependency": "ledger-db",
+    "consumer": "payment-events",
+    "state": "draining",
+    "windowFailures": 0,
+    "threshold": 20,
+    "windowSec": 60,
+    "openedMin": 95,
+    "probe": {
+      "type": "canary",
+      "everySec": 30,
+      "nextInSec": 0
+    },
+    "drainRate": 50
+  },
+  {
+    "dependency": "fraud-check",
+    "consumer": "payment-events",
+    "state": "closed",
+    "windowFailures": 6,
+    "threshold": 20,
+    "windowSec": 60,
+    "probe": {
+      "type": "health_check",
+      "everySec": 30,
+      "nextInSec": 0
+    },
+    "drainRate": 50
+  }
+]

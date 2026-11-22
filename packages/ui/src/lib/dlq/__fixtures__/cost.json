@@ -1,0 +1,17 @@
+{
+  "categories": ["schema-amount-type","sku-format-v1","inventory-timeout","unknown-magic-byte","email-null"],
+  "series": [
+    {
+      "name": "Storage",
+      "values": [42,18,6,4,9]
+    },
+    {
+      "name": "Replay",
+      "values": [31,55,70,3,0]
+    },
+    {
+      "name": "Operator",
+      "values": [260,40,0,85,55]
+    }
+  ]
+}

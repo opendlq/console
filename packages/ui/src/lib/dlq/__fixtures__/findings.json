@@ -1,0 +1,57 @@
+[
+  {
+    "id": "f1",
+    "detector": "rate",
+    "subject": "payment-events",
+    "observed": "412 msg/h",
+    "expected": "96 msg/h",
+    "score": 3.4,
+    "window": "1h",
+    "status": "open",
+    "openedAt": "2026-11-22 05:35:00"
+  },
+  {
+    "id": "f2",
+    "detector": "new_group",
+    "subject": "schema-amount-type",
+    "observed": "first seen",
+    "expected": "not seen in 30d",
+    "score": 0,
+    "window": "30d",
+    "status": "open",
+    "openedAt": "2026-11-22 05:05:00"
+  },
+  {
+    "id": "f3",
+    "detector": "unstable_dependency",
+    "subject": "inventory-service",
+    "observed": "4 openings",
+    "expected": "≤ 1 / 24h",
+    "score": 3.1,
+    "window": "24h",
+    "status": "open",
+    "openedAt": "2026-11-22 11:13:00"
+  },
+  {
+    "id": "f4",
+    "detector": "recurrence",
+    "subject": "sku-format-v1",
+    "observed": "4 episodes",
+    "expected": "< 3",
+    "score": 0,
+    "window": "60d",
+    "status": "open",
+    "openedAt": "2026-11-20 11:40:00"
+  },
+  {
+    "id": "f5",
+    "detector": "self_recovery_drop",
+    "subject": "order-events",
+    "observed": "61%",
+    "expected": "88%",
+    "score": 2.6,
+    "window": "24h",
+    "status": "closed",
+    "openedAt": "2026-11-19 12:20:00"
+  }
+]

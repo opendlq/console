@@ -8,6 +8,13 @@ export class GroupListStore {
   private readonly failures = inject(FailuresStore);
   readonly selection = signal<FailureGroup[]>([]);
   readonly messageCount = computed(() => this.selection().reduce((n, g) => n + g.count, 0));
+  /** Mensagens abertas dos grupos selecionados (o que o replay vai enviar). */
+  readonly messages = computed(() => {
+    const keys = new Set(this.selection().map((g) => g.key));
+    return this.failures.open().filter((m) => keys.has(m.groupKey));
+  });
+  /** Destinos possíveis de replay: os tópicos originais dos consumers das mensagens. */
+  readonly targets = computed(() => [...new Set(this.messages().map((m) => m.originalTopic))]);
   readonly dominantKind = computed<FailureKind>(() => (this.selection().every((g) => g.kind === 'transient') ? 'transient' : 'permanent'));
 
   replay(opts: { target?: string; rate?: number } = {}): number {

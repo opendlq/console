@@ -15,7 +15,7 @@ packages/modules/src/<modulo>/
 ├─ <modulo>.store.spec.ts     # vitest, sem TestBed
 ├─ <modulo>.types.ts          # só se mais de um arquivo usa o tipo
 └─ __fixtures__/
-   └─ <modulo>.fixture.ts     # dados de exemplo, determinísticos
+   └─ <nome>.json             # dados de exemplo: só JSON, nenhum .ts
 ```
 
 Exemplo real: `topics/` (`topics.store.ts` + spec) e `topic-messages.store.ts`.
@@ -37,15 +37,17 @@ Exemplo real: `topics/` (`topics.store.ts` + spec) e `topic-messages.store.ts`.
 Estado inicial lê a fixture do próprio módulo, com a emenda marcada:
 
 ```ts
-import { TOPICS_FIXTURE } from './__fixtures__/topics.fixture';
+import topics from './__fixtures__/topics.json';
 
 // ponytail: fixture; troque por inject(TopicsService) do @opendlq/core quando existir.
-readonly topics = signal<DlqTopic[]>(TOPICS_FIXTURE);
+readonly topics = signal(topics as DlqTopic[]);
 ```
 
-- Fixture: `export const TOPICS_FIXTURE: DlqTopic[] = [...]`, `UPPER_SNAKE`, sem `Math.random()`/`Date.now()`, só dados.
+- Fixture é **JSON escrito à mão**, só dado, pequeno o bastante para ler. Sem gerador, sem `Math.random()`/`Date.now()`/helper de data: datas absolutas. O cast `as Tipo[]` no import é o único TS envolvido. Regras completas em `opendlq-architecture`.
+- Derivado (grupos, funil, histórico) calcule na store/`domain.ts`, não no JSON.
 - Fixture **não** entra no `public-api.ts` e não é importada por outro package.
-- Quando o `core` existir, a store passa a receber os dados do service e a fixture fica para spec/story.
+- Quando o `core` existir, a store injeta o service, ganha `loading`/`error` e **não sabe se o modo é `fixtures` ou `http`** (ver `opendlq-architecture`). A fixture migra para os handlers do `core`.
+- Toda request nova exige teste Playwright: `opendlq-e2e`.
 
 ## Passo a passo
 

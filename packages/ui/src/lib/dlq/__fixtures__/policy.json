@@ -1,0 +1,32 @@
+[
+  {
+    "key": "retry",
+    "value": "max 5 · base 30s · ×2 · cap 30m · jitter 20%",
+    "info": "Backoff with jitter for transient failures."
+  },
+  {
+    "key": "breaker",
+    "value": "20 failures / 60s",
+    "info": "Distinct transient failures on one dependency that open the circuit."
+  },
+  {
+    "key": "probe",
+    "value": "canary every 30s, up to 5m",
+    "info": "Replays the oldest held message to test the dependency."
+  },
+  {
+    "key": "drain",
+    "value": "50 msg/s",
+    "info": "Rate at which the held backlog drains after the circuit closes."
+  },
+  {
+    "key": "recovery",
+    "value": "ack · 10s timeout",
+    "info": "The consumer confirms each replay on opendlq.ack."
+  },
+  {
+    "key": "ttl",
+    "value": "72h",
+    "info": "Open messages expire after this time."
+  }
+]

@@ -220,6 +220,31 @@ export function formatAge(min: number): string {
   return `${Math.floor(min / 1440)}d${h ? ` ${h}h` : ''}`;
 }
 
+/** Payload JSON como chega do Kafka (compacto) → indentado para ler/editar; texto que não é JSON volta como veio. */
+export function prettyPayload(payload: string): string {
+  try {
+    return JSON.stringify(JSON.parse(payload), null, 2);
+  } catch {
+    return payload;
+  }
+}
+
+/** Histórico base (do mais antigo ao mais novo), derivado do registro: o que Collector, Enricher e Policy Engine fizeram até o estado atual. */
+export function messageHistory(m: DlqMessage): Transition[] {
+  const t0 = Date.parse(`${m.receivedAt.replace(' ', 'T')}Z`);
+  const step = (i: number, by: string, action: string, from: MessageState | undefined, to: MessageState, note?: string): Transition => ({
+    id: `${m.id}-${i}`, at: new Date(t0 + i * 3000).toISOString().slice(0, 19).replace('T', ' '), actor: 'controller', by, action,
+    target: `message:${m.id.slice(0, 8)}`, from, to, result: 'ok', note, messageId: m.id,
+  });
+  const steps = [step(0, 'collector', 'received', undefined, 'received')];
+  if (m.state === 'received') return steps;
+  steps.push(step(1, 'enricher', 'enriched', 'received', 'enriched', `logs: ${m.enrichment.status}`));
+  if (m.state === 'enriched') return steps;
+  const via = ['awaiting_operator', 'retrying', 'held', 'runbook_matched'].includes(m.state) ? m.state : 'awaiting_operator';
+  steps.push(step(2, 'policy-engine', `classified ${m.kind} by ${m.classifiedBy}`, 'enriched', via));
+  return steps;
+}
+
 /** Agrupa as mensagens abertas por causa raiz (`group_key`), da maior para a menor. */
 export function groupMessages(messages: DlqMessage[]): FailureGroup[] {
   const groups = new Map<string, FailureGroup>();

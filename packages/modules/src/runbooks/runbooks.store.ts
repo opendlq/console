@@ -1,6 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { RUNBOOKS, type MessageState, type Runbook, type RunbookAction } from '@opendlq/ui';
+import type { MessageState, Runbook, RunbookAction, RunbookStatus } from '@opendlq/ui';
 import { FailuresStore } from '../failures/failures.store';
+import runbooks from './__fixtures__/runbooks.json';
 
 const AFTER_APPROVAL: Record<RunbookAction, MessageState> = { transform_replay: 'replaying', replay: 'replaying', route: 'routed', discard: 'discarded' };
 
@@ -8,8 +9,14 @@ const AFTER_APPROVAL: Record<RunbookAction, MessageState> = { transform_replay: 
 @Injectable({ providedIn: 'root' })
 export class RunbooksStore {
   private readonly failures = inject(FailuresStore);
-  /** ponytail: dados de exemplo; troque por chamadas à API do OpenDLQ. */
-  readonly runbooks = signal<Runbook[]>(RUNBOOKS);
+  // ponytail: fixture; troque por inject(RunbooksService) do @opendlq/core quando existir.
+  readonly runbooks = signal(runbooks as Runbook[]);
+  /** Quantos runbooks há em cada status do ciclo de vida. */
+  readonly byStatus = computed(() => {
+    const counts: Record<RunbookStatus, number> = { suggested: 0, dry_run: 0, supervised: 0, automatic: 0, expired: 0 };
+    for (const r of this.runbooks()) counts[r.status] += 1;
+    return counts;
+  });
   readonly expiringSoon = computed(() => this.runbooks().filter((r) => r.status !== 'expired' && r.daysLeft < 30));
 
   /** Mensagens esperando aprovação neste runbook. */

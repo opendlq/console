@@ -1,0 +1,37 @@
+<div class="page">
+  <odlq-page-header title="Overview" />
+
+  @for (v of openCircuits(); track v.breaker.dependency) {
+    <odlq-alert tone="warning" [heading]="'Circuit open: ' + v.breaker.dependency">
+      {{ v.held }} messages are held while the dependency is down. The next probe runs in {{ v.breaker.probe.nextInSec }}s; the backlog then drains at {{ v.breaker.drainRate }} msg/s.
+    </odlq-alert>
+  }
+
+  <odlq-kpi-row>
+    <odlq-kpi-card label="Open messages" [value]="store.open().length" [hint]="'across ' + store.groups().length + ' causes'" />
+    <odlq-kpi-card label="Waiting for an operator" [value]="store.awaitingOperator()" tone="danger" hint="permanent, needs a decision" />
+    <odlq-kpi-card label="Max age" [value]="maxAge()" tone="warning" hint="oldest open message" />
+    <odlq-kpi-card label="Self-recovery" [value]="store.selfRecovery() + '%'" tone="success" hint="closed without a human" />
+  </odlq-kpi-row>
+
+  <odlq-state-strip [counts]="store.stateCounts()" (selectedChange)="goToState($event)" />
+
+  <div class="cards">
+    <odlq-card heading="Resolution funnel"><odlq-funnel [rows]="store.funnel()" /></odlq-card>
+    <odlq-card heading="Arrivals per hour">
+      <odlq-chart-legend [series]="arrivals()" class="legend" />
+      <odlq-line-chart [series]="arrivals()" [categories]="categories" unit="msg" [area]="true" label="Messages arriving in the DLQ per hour" />
+    </odlq-card>
+  </div>
+
+  @if (breakers.needAttention().length) {
+    <section>
+      <h2>Circuits that need attention</h2>
+      <div class="breakers">
+        @for (v of breakers.needAttention(); track v.breaker.dependency) {
+          <odlq-breaker-card [breaker]="v.breaker" [held]="v.held" />
+        }
+      </div>
+    </section>
+  }
+</div>

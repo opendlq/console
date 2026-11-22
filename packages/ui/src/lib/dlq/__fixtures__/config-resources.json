@@ -1,0 +1,32 @@
+[
+  {
+    "kind": "Consumer",
+    "name": "order-events",
+    "scope": "order-events",
+    "yaml": "kind: Consumer\nmetadata:\n  name: order-events\nspec:\n  source:    { plugin: kafka, topic: order-events.dlq, group: opendlq }\n  replay_to: { plugin: kafka, topic: order-events }\n  serde: json\n  group_key: 'headers[\"x-failure-reason\"]'\n  correlation_headers: [traceparent, x-request-id]\n  enrichment:\n    sources:\n      - provider: loki-prod\n        extract:\n          error_class: 'log.json.error.type'\n    timeout: 3s\n    retries: 2\n    on_unavailable: continue"
+  },
+  {
+    "kind": "Policy",
+    "name": "order-events",
+    "scope": "order-events",
+    "yaml": "kind: Policy\nmetadata:\n  name: order-events\n  consumer: order-events\nspec:\n  retry:    { max: 5, base: 30s, factor: 2, cap: 30m, jitter: 0.2 }\n  breaker:  { window: 60s, threshold: 20 }\n  probe:    { type: canary, every: 30s, cap: 5m }\n  drain:    { rate: 50 }\n  recovery: { mode: ack, topic: opendlq.ack, timeout: 10s }\n  ttl: 72h"
+  },
+  {
+    "kind": "Runbook",
+    "name": "legacy-sku-format",
+    "scope": "order-events",
+    "yaml": "kind: Runbook\nmetadata:\n  name: legacy-sku-format\n  consumer: order-events\nspec:\n  match:\n    reason: \"validation: sku format\"\n    group_key: \"sku-format-v1\"\n  action:\n    transform: ./transforms/sku-v1-to-v2.jsonata\n    replay: original\n  guardrails:\n    max_per_hour: 500\n    approval_required_first: 3\n    expires: 2027-03-01"
+  },
+  {
+    "kind": "Alert",
+    "name": "order-events-stuck",
+    "scope": "order-events",
+    "yaml": "kind: Alert\nmetadata:\n  name: order-events-stuck\n  consumer: order-events\nspec:\n  when: max_age > 2h\n  severity: page\n  audience: operational\n  notify: [pagerduty-oncall]"
+  },
+  {
+    "kind": "Provider",
+    "name": "loki-prod",
+    "scope": "global",
+    "yaml": "kind: Provider\nmetadata:\n  name: loki-prod\nspec:\n  type: loki\n  url: https://loki.internal\n  auth: { secret_ref: loki-token }\n  link_template: \"https://grafana.internal/explore?traceId={{trace_id}}\""
+  }
+]

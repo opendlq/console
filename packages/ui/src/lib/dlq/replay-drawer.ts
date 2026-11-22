@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input, linkedSignal, model, output } from '@angular/core';
 import { OdlqButton } from '../button/button';
 import { OdlqCodeEditor } from '../code/code-editor';
-import type { DlqMessage } from '../domain';
+import { prettyPayload, type DlqMessage } from '../domain';
 import { OdlqDrawer } from '../drawer/drawer';
 import { OdlqFormField } from '../form-field/form-field';
 import { OdlqIcon } from '../icon/icon';
@@ -88,7 +88,7 @@ export class OdlqReplayDrawer {
   protected readonly single = computed(() => this.messages().length === 1);
   protected readonly target = linkedSignal<string | null>(() => this.messages()[0]?.originalTopic ?? this.targets()[0]?.value ?? null);
   protected readonly rate = linkedSignal(() => '50');
-  protected readonly payload = linkedSignal(() => this.messages()[0]?.payload ?? '');
+  protected readonly payload = linkedSignal(() => prettyPayload(this.messages()[0]?.payload ?? ''));
   protected readonly invalidRate = computed(() => this.messages().length > 1 && !(Number(this.rate()) > 0));
 
   protected publish(): void {

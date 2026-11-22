@@ -21,17 +21,16 @@ import { OdlqTabs, type OdlqTab } from '../tabs/tabs';
       <odlq-sidebar>
         <odlq-brand brand name="OpenDLQ" [selector]="true" />
         <odlq-nav-section label="Main">
-          <a odlq-nav-item icon="home" [active]="active() === 'home'">Home</a>
-          <a odlq-nav-item icon="topics" [active]="active() === 'topics'">Topics</a>
-          <a odlq-nav-item icon="consumer-groups" [active]="active() === 'groups'">Consumer Groups</a>
-          <a odlq-nav-item icon="schema" [active]="active() === 'schema'">Schema Registry</a>
-          <a odlq-nav-item icon="connect" [active]="active() === 'connect'">Kafka Connect</a>
+          <a odlq-nav-item icon="home" [active]="active() === 'overview'">Overview</a>
+          <a odlq-nav-item icon="bug" [active]="active() === 'failures'">Failures</a>
+          <a odlq-nav-item icon="zap" [active]="active() === 'recovery'">Recovery</a>
+          <a odlq-nav-item icon="book" [active]="active() === 'runbooks'">Runbooks</a>
         </odlq-nav-section>
         <odlq-nav-section label="Others">
-          <a odlq-nav-item icon="insights" [active]="active() === 'insights'" badge="Beta">Insights</a>
-          <a odlq-nav-item icon="chargeback" [active]="active() === 'chargeback'">Chargeback</a>
-          <a odlq-nav-item icon="team" [active]="active() === 'permissions'">Permissions</a>
-          <a odlq-nav-item icon="settings">Settings</a>
+          <a odlq-nav-item icon="insights" [active]="active() === 'insights'">Insights</a>
+          <a odlq-nav-item icon="bell" [active]="active() === 'alerts'">Alerts</a>
+          <a odlq-nav-item icon="history" [active]="active() === 'audit'">Audit log</a>
+          <a odlq-nav-item icon="settings" [active]="active() === 'config'">Configuration</a>
         </odlq-nav-section>
       </odlq-sidebar>
       <odlq-topbar>
@@ -64,19 +63,10 @@ import { OdlqTabs, type OdlqTab } from '../tabs/tabs';
   `,
 })
 export class OdlqDemoFrame {
-  readonly active = input('topics');
+  readonly active = input('overview');
   readonly title = input.required<string>();
   readonly crumbs = input<OdlqCrumb[]>([]);
   readonly tabs = input<OdlqTab[]>([]);
   readonly tab = model('');
   readonly height = input('100vh');
 }
-
-export const TOPIC_TABS: OdlqTab[] = [
-  { value: 'consume', label: 'Consume' },
-  { value: 'produce', label: 'Produce' },
-  { value: 'config', label: 'Configuration' },
-  { value: 'schema', label: 'Schema' },
-  { value: 'groups', label: 'Consumer Groups', count: 3 },
-  { value: 'acl', label: 'ACL' },
-];

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input, model, output, signal } from '@angular/core';
 import { OdlqButton } from '../button/button';
 import { OdlqCodeBlock } from '../code/code-block';
-import { isOpen, type DlqMessage, type Transition } from '../domain';
+import { isOpen, prettyPayload, type DlqMessage, type Transition } from '../domain';
 import { OdlqDrawer } from '../drawer/drawer';
 import { OdlqIcon } from '../icon/icon';
 import { OdlqTabs, type OdlqTab } from '../tabs/tabs';
@@ -52,7 +52,7 @@ const TABS: OdlqTab[] = [
             </dl>
           }
           @case ('payload') {
-            <odlq-code-block [code]="m.payload" language="json" label="Message payload" />
+            <odlq-code-block [code]="pretty(m.payload)" language="json" label="Message payload" />
           }
           @case ('headers') {
             <odlq-header-list [headers]="m.headers" />
@@ -158,6 +158,7 @@ export class OdlqMessageDetailDrawer {
   readonly reclassify = output<DlqMessage>();
   readonly discard = output<DlqMessage>();
 
+  protected readonly pretty = prettyPayload;
   protected readonly tabs = TABS;
   protected readonly tab = signal('overview');
   protected readonly actionable = computed(() => !!this.message() && isOpen(this.message()!.state));

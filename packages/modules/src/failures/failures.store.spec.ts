@@ -6,7 +6,7 @@ const setup = () => ({ store: TestBed.inject(FailuresStore), audit: TestBed.inje
 const idsOf = (store: FailuresStore, key: string) => store.messagesOf(key).map((m) => m.id);
 
 describe('FailuresStore', () => {
-  it('groups only open messages by cause, biggest first', () => {
+  it('agrupa só as mensagens abertas por causa, da maior para a menor', () => {
     const { store } = setup();
     const groups = store.groups();
     expect(groups.reduce((n, g) => n + g.count, 0)).toBe(store.open().length);
@@ -14,7 +14,7 @@ describe('FailuresStore', () => {
     expect(store.funnel().find((r) => r.key === 'open')?.count).toBe(store.open().length);
   });
 
-  it('filters groups by text, consumer, kind and state, and clears them', () => {
+  it('filtra os grupos por texto, consumer, tipo e estado, e limpa os filtros', () => {
     const { store } = setup();
     const all = store.visibleGroups().length;
     store.consumer.set('user-events');
@@ -32,7 +32,7 @@ describe('FailuresStore', () => {
     expect(store.filtering()).toBe(false);
   });
 
-  it('replays open messages, ignores closed ones and records one audit entry', () => {
+  it('faz replay das mensagens abertas, ignora as fechadas e registra uma entrada de auditoria', () => {
     const { store, audit } = setup();
     const ids = idsOf(store, 'schema-amount-type');
     const before = audit.entries().length;
@@ -41,12 +41,11 @@ describe('FailuresStore', () => {
     const entry = audit.entries()[0];
     expect([entry.action, entry.target, entry.count, entry.to]).toEqual(['replay', 'group:schema-amount-type', ids.length, 'replaying']);
     expect(audit.entries().length).toBe(before + 1);
-    // uma mensagem já fechada não é reaberta
     store.discard([ids[0]]);
     expect(store.replay([ids[0]])).toBe(0);
   });
 
-  it('reclassifies: transient goes back to retrying, permanent waits for an operator', () => {
+  it('reclassifica: transitório volta a retrying, permanente espera um operador', () => {
     const { store } = setup();
     const [id] = idsOf(store, 'schema-amount-type');
     store.reclassify([id], 'transient');
@@ -56,7 +55,7 @@ describe('FailuresStore', () => {
     expect(store.messages().find((x) => x.id === id)!.state).toBe('awaiting_operator');
   });
 
-  it('edits the payload and replays under the same id; the message history shows the action first', () => {
+  it('edita o payload e reenvia com o mesmo id; o histórico mostra a ação primeiro', () => {
     const { store } = setup();
     const m = store.messagesOf('schema-amount-type')[0];
     expect(store.editAndReplay(m.id, '{"amount":10}')).toBe(1);
@@ -65,9 +64,16 @@ describe('FailuresStore', () => {
     expect(store.historyOf(after)[0].action).toBe('edit and replay');
   });
 
-  it('discarding every message of a group removes the group', () => {
+  it('descartar todas as mensagens de um grupo remove o grupo', () => {
     const { store } = setup();
     store.discard(idsOf(store, 'email-null'));
     expect(store.groups().some((g) => g.key === 'email-null')).toBe(false);
+  });
+
+  it('conta as chegadas por hora nas últimas 12 horas', () => {
+    const { store } = setup();
+    const arrivals = store.arrivalsPerHour();
+    expect(arrivals).toHaveLength(12);
+    expect(arrivals.reduce((a, b) => a + b, 0)).toBe(store.messages().filter((m) => m.ageMin < 720).length);
   });
 });

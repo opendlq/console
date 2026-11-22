@@ -1,6 +1,8 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { BREAKERS, type Breaker } from '@opendlq/ui';
+import type { Breaker, OdlqKeyValue } from '@opendlq/ui';
 import { FailuresStore } from '../failures/failures.store';
+import breakers from './__fixtures__/breakers.json';
+import policy from './__fixtures__/policy.json';
 
 export interface BreakerView {
   breaker: Breaker;
@@ -12,8 +14,10 @@ export interface BreakerView {
 @Injectable({ providedIn: 'root' })
 export class BreakersStore {
   private readonly failures = inject(FailuresStore);
-  /** ponytail: dados de exemplo; troque por chamadas à API do OpenDLQ. */
-  readonly breakers = signal<Breaker[]>(BREAKERS);
+  // ponytail: fixture; troque por inject(BreakersService) do @opendlq/core quando existir.
+  readonly breakers = signal(breakers as Breaker[]);
+  /** Valores efetivos da `Policy` (somente leitura: a config é declarativa). */
+  readonly policy = signal(policy as OdlqKeyValue[]);
 
   readonly views = computed<BreakerView[]>(() => {
     const held = new Map<string, number>();

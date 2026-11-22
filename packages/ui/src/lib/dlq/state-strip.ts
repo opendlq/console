@@ -22,8 +22,9 @@ import { OPEN_STATES, STATES, type MessageState } from '../domain';
     }
     button {
       display: flex;
-      min-width: 112px;
+      flex: 0 0 auto;
       flex-direction: column;
+      white-space: nowrap;
       gap: 2px;
       padding: 8px 12px;
       border: 1px solid var(--ui-border);

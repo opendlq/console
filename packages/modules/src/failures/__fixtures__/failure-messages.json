@@ -1,0 +1,1298 @@
+[
+  {
+    "id": "4f39acbe-cd8b-4191-a913-f0d027e6c818",
+    "receivedAt": "2026-11-22 11:56:00",
+    "ageMin": 4,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 2,
+    "offset": 59723,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-6412",
+    "payload": "[binary] 00 00 01 86 a0 0a 7b 22 69 64 22 3a",
+    "headers": {"x-failure-reason":"deserialization: unknown magic byte","x-attempt":"1","traceparent":"00-9d47ddbfb1ccf633bfcf5d1baf5a6f2d-e0433741993fdd0c-01","x-request-id":"req-50ad774c"},
+    "consumer": "payment-events",
+    "kind": "unknown",
+    "reason": "deserialization: unknown magic byte",
+    "groupKey": "unknown-magic-byte",
+    "classifiedBy": "inference",
+    "state": "enriched",
+    "attempts": [],
+    "expiresAt": "2026-11-25 11:56:00",
+    "enrichment": {
+      "status": "reused",
+      "logs": [
+        {"at":"11:55:57","level":"error","text":"DeserializationException: Unknown magic byte! (topic payments.transactions)"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=6ee9c314"
+    }
+  },
+  {
+    "id": "cf66ed28-6a3b-4cb0-a65b-d2f49480d755",
+    "receivedAt": "2026-11-22 11:53:00",
+    "ageMin": 7,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 3,
+    "offset": 13475,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-8207",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"1 014 551\"}",
+    "headers": {"x-failure-reason":"deadlock: ledger-db","x-failure-dependency":"ledger-db","x-attempt":"1","x-dlq-id":"cf66ed28-6a3b-4cb0-a65b-d2f49480d755","x-dlq-attempt":"1","traceparent":"00-0a281157ae8924b4d1d358b4d2006aaf-1ddfcf6f5bbca22b-01","x-request-id":"req-89b67d77"},
+    "consumer": "payment-events",
+    "kind": "transient",
+    "reason": "deadlock: ledger-db",
+    "dependency": "ledger-db",
+    "groupKey": "ledger-deadlock",
+    "classifiedBy": "inference",
+    "state": "held",
+    "attempts": [
+      {"at":"2026-11-22 11:53:30","outcome":"failed","message":"deadlock: ledger-db","durationMs":264}
+    ],
+    "expiresAt": "2026-11-25 11:53:00",
+    "enrichment": {
+      "status": "unavailable",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=40038baf"
+    }
+  },
+  {
+    "id": "eefecce6-acad-4a06-a045-0171f0b1fca2",
+    "receivedAt": "2026-11-22 11:51:00",
+    "ageMin": 9,
+    "sourceTopic": "order-events.dlq",
+    "partition": 4,
+    "offset": 45032,
+    "originalTopic": "order-events",
+    "partitionKey": "cust-8057",
+    "payload": "{\"orderId\":\"ord_8f2c1\",\"customer\":{\"id\":4000,\"tier\":\"gold\"},\"items\":[{\"sku\":\"A-100\",\"qty\":1}],\"total\":20}",
+    "headers": {"x-failure-kind":"transient","x-failure-reason":"timeout: inventory-service","x-failure-dependency":"inventory-service","x-attempt":"1","x-dlq-id":"eefecce6-acad-4a06-a045-0171f0b1fca2","x-dlq-attempt":"2","traceparent":"00-000e7ffe60dbcf86cce7ae8966a1c4fb-464af74867160fbd-01","x-request-id":"req-b487a439"},
+    "consumer": "order-events",
+    "kind": "transient",
+    "reason": "timeout: inventory-service",
+    "dependency": "inventory-service",
+    "groupKey": "inventory-timeout",
+    "classifiedBy": "header",
+    "state": "held",
+    "attempts": [
+      {"at":"2026-11-22 11:51:30","outcome":"failed","message":"timeout: inventory-service","durationMs":30000},
+      {"at":"2026-11-22 11:52:00","outcome":"failed","message":"timeout: inventory-service","durationMs":30000}
+    ],
+    "expiresAt": "2026-11-25 11:51:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"11:50:54","level":"warn","text":"GET /inventory/stock?sku=A-100 timed out after 30000ms"},
+        {"at":"11:50:57","level":"error","text":"inventory-service: upstream connect error or disconnect/reset before headers"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=2c5c122f"
+    }
+  },
+  {
+    "id": "bcd5644f-e164-4b75-af0f-1defc0d146b5",
+    "receivedAt": "2026-11-22 11:49:00",
+    "ageMin": 11,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 5,
+    "offset": 49979,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-5968",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"2 300,00\"}",
+    "headers": {"x-failure-reason":"http 429: fraud-check","x-failure-dependency":"fraud-check","x-attempt":"1","x-dlq-id":"bcd5644f-e164-4b75-af0f-1defc0d146b5","x-dlq-attempt":"3","traceparent":"00-07750b6c8a0ec9a7450286833c676375-5b545803f14999ed-01","x-request-id":"req-6bf941f6"},
+    "consumer": "payment-events",
+    "kind": "transient",
+    "reason": "http 429: fraud-check",
+    "dependency": "fraud-check",
+    "groupKey": "fraud-check-rate-limit",
+    "classifiedBy": "rule",
+    "state": "retrying",
+    "attempts": [
+      {"at":"2026-11-22 11:49:30","outcome":"failed","message":"http 429: fraud-check","durationMs":49},
+      {"at":"2026-11-22 11:50:00","outcome":"failed","message":"http 429: fraud-check","durationMs":322},
+      {"at":"2026-11-22 11:51:00","outcome":"failed","message":"http 429: fraud-check","durationMs":202}
+    ],
+    "nextRetryAt": "2026-11-22 12:02:00",
+    "expiresAt": "2026-11-25 11:49:00",
+    "enrichment": {
+      "status": "skipped",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=3f8f2564"
+    }
+  },
+  {
+    "id": "e4297161-9d62-4aaf-aff3-91df01167f47",
+    "receivedAt": "2026-11-22 11:49:00",
+    "ageMin": 11,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 1,
+    "offset": 10977,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-7016",
+    "payload": "[binary] 00 00 01 86 a0 0a 7b 22 69 64 22 3a",
+    "headers": {"x-failure-reason":"deserialization: unknown magic byte","x-attempt":"1","traceparent":"00-78aa8895a6c7c13feb44931ba0f9892a-cc9d748705c1bfa9-01","x-request-id":"req-712c1cf5"},
+    "consumer": "payment-events",
+    "kind": "unknown",
+    "reason": "deserialization: unknown magic byte",
+    "groupKey": "unknown-magic-byte",
+    "classifiedBy": "inference",
+    "state": "received",
+    "attempts": [],
+    "expiresAt": "2026-11-25 11:49:00",
+    "enrichment": {
+      "status": "reused",
+      "logs": [
+        {"at":"11:48:57","level":"error","text":"DeserializationException: Unknown magic byte! (topic payments.transactions)"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=f6983879"
+    }
+  },
+  {
+    "id": "886948b8-306f-4790-a9e0-de41080e1bda",
+    "receivedAt": "2026-11-22 11:46:00",
+    "ageMin": 14,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 2,
+    "offset": 73953,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-1722",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"2 300,00\"}",
+    "headers": {"x-failure-reason":"deadlock: ledger-db","x-failure-dependency":"ledger-db","x-attempt":"1","traceparent":"00-724bfb43e039a6f5f9c0299fe486a4fe-38d05730d8933f8b-01","x-request-id":"req-b90920a8"},
+    "consumer": "payment-events",
+    "kind": "transient",
+    "reason": "deadlock: ledger-db",
+    "dependency": "ledger-db",
+    "groupKey": "ledger-deadlock",
+    "classifiedBy": "inference",
+    "state": "received",
+    "attempts": [],
+    "expiresAt": "2026-11-25 11:46:00",
+    "enrichment": {
+      "status": "unavailable",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=215c553e"
+    }
+  },
+  {
+    "id": "7733e5fe-ac6e-459a-ad63-07094430567f",
+    "receivedAt": "2026-11-22 11:44:00",
+    "ageMin": 16,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 3,
+    "offset": 20774,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-6820",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"1 014 551\"}",
+    "headers": {"x-failure-reason":"deadlock: ledger-db","x-failure-dependency":"ledger-db","x-attempt":"1","x-dlq-id":"7733e5fe-ac6e-459a-ad63-07094430567f","x-dlq-attempt":"1","traceparent":"00-4523ef6927ef80b8c35553dd7fb46cb4-751cdf58762d478b-01","x-request-id":"req-a8afa276"},
+    "consumer": "payment-events",
+    "kind": "transient",
+    "reason": "deadlock: ledger-db",
+    "dependency": "ledger-db",
+    "groupKey": "ledger-deadlock",
+    "classifiedBy": "inference",
+    "state": "retrying",
+    "attempts": [
+      {"at":"2026-11-22 11:44:30","outcome":"failed","message":"deadlock: ledger-db","durationMs":25}
+    ],
+    "nextRetryAt": "2026-11-22 12:22:00",
+    "expiresAt": "2026-11-25 11:44:00",
+    "enrichment": {
+      "status": "unavailable",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=b5d271d9"
+    }
+  },
+  {
+    "id": "ecbde889-d75f-4f32-a714-c989ec00bf50",
+    "receivedAt": "2026-11-22 11:43:00",
+    "ageMin": 17,
+    "sourceTopic": "order-events.dlq",
+    "partition": 3,
+    "offset": 46220,
+    "originalTopic": "order-events",
+    "partitionKey": "cust-2350",
+    "payload": "{\"orderId\":\"ord_8f2e6\",\"customer\":{\"id\":4001,\"tier\":\"silver\"},\"items\":[{\"sku\":\"A-100\",\"qty\":2}],\"total\":23.7}",
+    "headers": {"x-failure-kind":"transient","x-failure-reason":"timeout: inventory-service","x-failure-dependency":"inventory-service","x-attempt":"1","x-dlq-id":"ecbde889-d75f-4f32-a714-c989ec00bf50","x-dlq-attempt":"1","traceparent":"00-44ae12dc831ba00a16ffa86b683490f8-3f34cf05bdb8c962-01","x-request-id":"req-09b7c7b4"},
+    "consumer": "order-events",
+    "kind": "transient",
+    "reason": "timeout: inventory-service",
+    "dependency": "inventory-service",
+    "groupKey": "inventory-timeout",
+    "classifiedBy": "header",
+    "state": "held",
+    "attempts": [
+      {"at":"2026-11-22 11:43:30","outcome":"failed","message":"timeout: inventory-service","durationMs":30000}
+    ],
+    "expiresAt": "2026-11-25 11:43:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"11:42:54","level":"warn","text":"GET /inventory/stock?sku=A-100 timed out after 30000ms"},
+        {"at":"11:42:57","level":"error","text":"inventory-service: upstream connect error or disconnect/reset before headers"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=0a4d878e"
+    }
+  },
+  {
+    "id": "0f689447-965a-408f-aa7f-a505434754f3",
+    "receivedAt": "2026-11-22 11:41:00",
+    "ageMin": 19,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 1,
+    "offset": 39243,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-1230",
+    "payload": "[binary] 00 00 01 86 a0 0a 7b 22 69 64 22 3a",
+    "headers": {"x-failure-reason":"deserialization: unknown magic byte","x-attempt":"1","traceparent":"00-3e9321239d9f1a97b01f7c2f2a77db4d-ac820ef0f5d6e3ee-01","x-request-id":"req-41065644"},
+    "consumer": "payment-events",
+    "kind": "unknown",
+    "reason": "deserialization: unknown magic byte",
+    "groupKey": "unknown-magic-byte",
+    "classifiedBy": "inference",
+    "state": "enriched",
+    "attempts": [],
+    "expiresAt": "2026-11-25 11:41:00",
+    "enrichment": {
+      "status": "reused",
+      "logs": [
+        {"at":"11:40:57","level":"error","text":"DeserializationException: Unknown magic byte! (topic payments.transactions)"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=d010c342"
+    }
+  },
+  {
+    "id": "ec94f574-8700-4b3c-a530-66f24903cbac",
+    "receivedAt": "2026-11-22 11:36:00",
+    "ageMin": 24,
+    "sourceTopic": "order-events.dlq",
+    "partition": 0,
+    "offset": 29491,
+    "originalTopic": "order-events",
+    "partitionKey": "cust-3999",
+    "payload": "{\"orderId\":\"ord_8f355\",\"customer\":{\"id\":4004,\"tier\":\"silver\"},\"items\":[{\"sku\":\"A-100\",\"qty\":2}],\"total\":34.8}",
+    "headers": {"x-failure-kind":"transient","x-failure-reason":"timeout: inventory-service","x-failure-dependency":"inventory-service","x-attempt":"1","x-dlq-id":"ec94f574-8700-4b3c-a530-66f24903cbac","x-dlq-attempt":"1","traceparent":"00-56aee29633dd402777e03aa059657609-ac6cd591a6990f25-01","x-request-id":"req-d76d1f63"},
+    "consumer": "order-events",
+    "kind": "transient",
+    "reason": "timeout: inventory-service",
+    "dependency": "inventory-service",
+    "groupKey": "inventory-timeout",
+    "classifiedBy": "header",
+    "state": "retrying",
+    "attempts": [
+      {"at":"2026-11-22 11:36:30","outcome":"failed","message":"timeout: inventory-service","durationMs":30000}
+    ],
+    "nextRetryAt": "2026-11-22 12:24:00",
+    "expiresAt": "2026-11-25 11:36:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"11:35:54","level":"warn","text":"GET /inventory/stock?sku=A-100 timed out after 30000ms"},
+        {"at":"11:35:57","level":"error","text":"inventory-service: upstream connect error or disconnect/reset before headers"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=1ef2808b"
+    }
+  },
+  {
+    "id": "6954ea6f-feb0-41b1-aad4-f7ca2fb2d09c",
+    "receivedAt": "2026-11-22 11:34:00",
+    "ageMin": 26,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 0,
+    "offset": 58955,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-3733",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"2 300,00\"}",
+    "headers": {"x-failure-reason":"deadlock: ledger-db","x-failure-dependency":"ledger-db","x-attempt":"1","x-dlq-id":"6954ea6f-feb0-41b1-aad4-f7ca2fb2d09c","x-dlq-attempt":"1","traceparent":"00-f979aecfd272f48848b76fa6370a8bcf-e58a3f340c8852ac-01","x-request-id":"req-2484fad7"},
+    "consumer": "payment-events",
+    "kind": "transient",
+    "reason": "deadlock: ledger-db",
+    "dependency": "ledger-db",
+    "groupKey": "ledger-deadlock",
+    "classifiedBy": "inference",
+    "state": "held",
+    "attempts": [
+      {"at":"2026-11-22 11:34:30","outcome":"failed","message":"deadlock: ledger-db","durationMs":61}
+    ],
+    "expiresAt": "2026-11-25 11:34:00",
+    "enrichment": {
+      "status": "unavailable",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=e3212196"
+    }
+  },
+  {
+    "id": "bc9d8911-a118-468e-aef8-1a5fb4528e86",
+    "receivedAt": "2026-11-22 11:33:00",
+    "ageMin": 27,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 3,
+    "offset": 13597,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-8032",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"2 300,00\"}",
+    "headers": {"x-failure-reason":"http 429: fraud-check","x-failure-dependency":"fraud-check","x-attempt":"1","x-dlq-id":"bc9d8911-a118-468e-aef8-1a5fb4528e86","x-dlq-attempt":"3","traceparent":"00-d470e387e9d69c7ae2d3886af5abfc30-366ee982b711dcd2-01","x-request-id":"req-1131ea0f"},
+    "consumer": "payment-events",
+    "kind": "transient",
+    "reason": "http 429: fraud-check",
+    "dependency": "fraud-check",
+    "groupKey": "fraud-check-rate-limit",
+    "classifiedBy": "rule",
+    "state": "replaying",
+    "attempts": [
+      {"at":"2026-11-22 11:33:30","outcome":"failed","message":"http 429: fraud-check","durationMs":78},
+      {"at":"2026-11-22 11:34:00","outcome":"failed","message":"http 429: fraud-check","durationMs":308},
+      {"at":"2026-11-22 11:35:00","outcome":"failed","message":"http 429: fraud-check","durationMs":95},
+      {"at":"2026-11-22 11:59:00","outcome":"queued"}
+    ],
+    "expiresAt": "2026-11-25 11:33:00",
+    "enrichment": {
+      "status": "skipped",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=a75d26c8"
+    }
+  },
+  {
+    "id": "e05e5a74-7428-4b68-aaf6-f7f5415375b2",
+    "receivedAt": "2026-11-22 11:27:00",
+    "ageMin": 33,
+    "sourceTopic": "order-events.dlq",
+    "partition": 5,
+    "offset": 13807,
+    "originalTopic": "order-events",
+    "partitionKey": "cust-6205",
+    "payload": "{\"orderId\":\"ord_8f30b\",\"customer\":{\"id\":4002,\"tier\":\"silver\"},\"items\":[{\"sku\":\"A-100\",\"qty\":3}],\"total\":27.4}",
+    "headers": {"x-failure-kind":"transient","x-failure-reason":"timeout: inventory-service","x-failure-dependency":"inventory-service","x-attempt":"1","x-dlq-id":"e05e5a74-7428-4b68-aaf6-f7f5415375b2","x-dlq-attempt":"2","traceparent":"00-24094a533fdfcda1f93c61323ec4751b-30e325cedef76e66-01","x-request-id":"req-2b29b2d4"},
+    "consumer": "order-events",
+    "kind": "transient",
+    "reason": "timeout: inventory-service",
+    "dependency": "inventory-service",
+    "groupKey": "inventory-timeout",
+    "classifiedBy": "header",
+    "state": "held",
+    "attempts": [
+      {"at":"2026-11-22 11:27:30","outcome":"failed","message":"timeout: inventory-service","durationMs":30000},
+      {"at":"2026-11-22 11:28:00","outcome":"failed","message":"timeout: inventory-service","durationMs":30000}
+    ],
+    "expiresAt": "2026-11-25 11:27:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"11:26:54","level":"warn","text":"GET /inventory/stock?sku=A-100 timed out after 30000ms"},
+        {"at":"11:26:57","level":"error","text":"inventory-service: upstream connect error or disconnect/reset before headers"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=17039c3f"
+    }
+  },
+  {
+    "id": "bf8ac500-95e5-4a24-a0ef-2208a116a406",
+    "receivedAt": "2026-11-22 11:16:00",
+    "ageMin": 44,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 3,
+    "offset": 46254,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-1166",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"1 014 551\"}",
+    "headers": {"x-failure-reason":"http 429: fraud-check","x-failure-dependency":"fraud-check","x-attempt":"1","x-dlq-id":"bf8ac500-95e5-4a24-a0ef-2208a116a406","x-dlq-attempt":"1","traceparent":"00-2575724c8e44dd3a47d1bf91d0662393-f8812337a8f12043-01","x-request-id":"req-7a4ed987"},
+    "consumer": "payment-events",
+    "kind": "transient",
+    "reason": "http 429: fraud-check",
+    "dependency": "fraud-check",
+    "groupKey": "fraud-check-rate-limit",
+    "classifiedBy": "rule",
+    "state": "retrying",
+    "attempts": [
+      {"at":"2026-11-22 11:16:30","outcome":"failed","message":"http 429: fraud-check","durationMs":400}
+    ],
+    "nextRetryAt": "2026-11-22 12:04:00",
+    "expiresAt": "2026-11-25 11:16:00",
+    "enrichment": {
+      "status": "skipped",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=8d1a7302"
+    }
+  },
+  {
+    "id": "6f3e1ae0-c749-484d-a025-4f1ae3ddca29",
+    "receivedAt": "2026-11-22 11:10:00",
+    "ageMin": 50,
+    "sourceTopic": "order-events.dlq",
+    "partition": 1,
+    "offset": 53614,
+    "originalTopic": "order-events",
+    "partitionKey": "cust-7071",
+    "payload": "{\"orderId\":\"ord_8f330\",\"customer\":{\"id\":4003,\"tier\":\"gold\"},\"items\":[{\"sku\":\"A-100\",\"qty\":1}],\"total\":31.1}",
+    "headers": {"x-failure-kind":"transient","x-failure-reason":"timeout: inventory-service","x-failure-dependency":"inventory-service","x-attempt":"1","x-dlq-id":"6f3e1ae0-c749-484d-a025-4f1ae3ddca29","x-dlq-attempt":"1","traceparent":"00-21d3c0905bc86517b3cde0930369c35f-80d341b542f12825-01","x-request-id":"req-caff8f48"},
+    "consumer": "order-events",
+    "kind": "transient",
+    "reason": "timeout: inventory-service",
+    "dependency": "inventory-service",
+    "groupKey": "inventory-timeout",
+    "classifiedBy": "header",
+    "state": "held",
+    "attempts": [
+      {"at":"2026-11-22 11:10:30","outcome":"failed","message":"timeout: inventory-service","durationMs":30000}
+    ],
+    "expiresAt": "2026-11-25 11:10:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"11:09:54","level":"warn","text":"GET /inventory/stock?sku=A-100 timed out after 30000ms"},
+        {"at":"11:09:57","level":"error","text":"inventory-service: upstream connect error or disconnect/reset before headers"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=fe9c05bc"
+    }
+  },
+  {
+    "id": "1c852e24-1795-43e0-a442-480084fbf507",
+    "receivedAt": "2026-11-22 07:39:00",
+    "ageMin": 261,
+    "sourceTopic": "order-events.dlq",
+    "partition": 5,
+    "offset": 25077,
+    "originalTopic": "order-events",
+    "partitionKey": "cust-3305",
+    "payload": "{\"orderId\":\"ord_8f511\",\"customer\":{\"id\":4016,\"tier\":\"silver\"},\"items\":[{\"sku\":\"100-A\",\"qty\":2}],\"total\":79.2}",
+    "headers": {"x-failure-reason":"validation: sku format","x-attempt":"1","traceparent":"00-66b15a761937a6f815021012e21347f8-e8d2bf570421a257-01","x-request-id":"req-269d3eb3"},
+    "consumer": "order-events",
+    "kind": "permanent",
+    "reason": "validation: sku format",
+    "groupKey": "sku-format-v1",
+    "classifiedBy": "rule",
+    "state": "awaiting_approval",
+    "attempts": [],
+    "runbook": "legacy-sku-format",
+    "expiresAt": "2026-11-25 07:39:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"07:38:57","level":"error","text":"ValidationError: items[0].sku does not match ^[A-Z]-\\d+$"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=1876c8b2"
+    }
+  },
+  {
+    "id": "0b35bcfe-d1aa-4af9-aebe-5e13a1991493",
+    "receivedAt": "2026-11-22 05:34:00",
+    "ageMin": 386,
+    "sourceTopic": "order-events.dlq",
+    "partition": 4,
+    "offset": 83420,
+    "originalTopic": "order-events",
+    "partitionKey": "cust-8621",
+    "payload": "{\"orderId\":\"ord_8f4c7\",\"customer\":{\"id\":4014,\"tier\":\"silver\"},\"items\":[{\"sku\":\"a_100\",\"qty\":3}],\"total\":71.8}",
+    "headers": {"x-failure-reason":"validation: sku format","x-attempt":"1","traceparent":"00-7bb0571ef5c60cc7f5ed600e842d8d49-8043bb9cb2b5844a-01","x-request-id":"req-24fb31eb"},
+    "consumer": "order-events",
+    "kind": "permanent",
+    "reason": "validation: sku format",
+    "groupKey": "sku-format-v1",
+    "classifiedBy": "rule",
+    "state": "runbook_matched",
+    "attempts": [],
+    "runbook": "legacy-sku-format",
+    "expiresAt": "2026-11-25 05:34:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"05:33:57","level":"error","text":"ValidationError: items[0].sku does not match ^[A-Z]-\\d+$"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=332308b3"
+    }
+  },
+  {
+    "id": "6c6616f0-9d75-410a-aa5b-63cad1f5da73",
+    "receivedAt": "2026-11-22 05:07:00",
+    "ageMin": 413,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 3,
+    "offset": 10096,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-3605",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"1 014 551\"}",
+    "headers": {"x-failure-reason":"schema: amount must be a number","x-attempt":"1","traceparent":"00-ec454381460b4d21fbbd2a655a0fb746-85223ad45e780993-01","x-request-id":"req-2d1fcc05"},
+    "consumer": "payment-events",
+    "kind": "permanent",
+    "reason": "schema: amount must be a number",
+    "groupKey": "schema-amount-type",
+    "classifiedBy": "logs",
+    "state": "awaiting_operator",
+    "attempts": [],
+    "expiresAt": "2026-11-25 05:07:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"05:06:54","level":"error","text":"SchemaValidationException: $.amount: string found, number expected"},
+        {"at":"05:06:57","level":"warn","text":"payments-api v2.14 deployed 3 minutes before the first failure"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=fdc3b6e9"
+    }
+  },
+  {
+    "id": "00a19bc9-10b0-4378-a27c-c7fa80e32a8c",
+    "receivedAt": "2026-11-22 05:05:00",
+    "ageMin": 415,
+    "sourceTopic": "user-events.dlq",
+    "partition": 1,
+    "offset": 62829,
+    "originalTopic": "user-registrations",
+    "partitionKey": "cust-9377",
+    "payload": "{\"userId\":9028,\"email\":null,\"tenant\":\"acme\"}",
+    "headers": {"x-failure-reason":"constraint: email not null","x-attempt":"1","traceparent":"00-7cc0945188a959238470e5a95afc123b-4624077875ca9e05-01","x-request-id":"req-079528b5"},
+    "consumer": "user-events",
+    "kind": "permanent",
+    "reason": "constraint: email not null",
+    "groupKey": "email-null",
+    "classifiedBy": "group",
+    "state": "awaiting_operator",
+    "attempts": [],
+    "expiresAt": "2026-11-25 05:05:00",
+    "enrichment": {
+      "status": "not_found",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=d10d5add"
+    }
+  },
+  {
+    "id": "8e654b37-a9dd-4600-a5a6-d730b6366d21",
+    "receivedAt": "2026-11-22 03:09:00",
+    "ageMin": 531,
+    "sourceTopic": "order-events.dlq",
+    "partition": 1,
+    "offset": 76107,
+    "originalTopic": "order-events",
+    "partitionKey": "cust-1759",
+    "payload": "{\"orderId\":\"ord_8f37a\",\"customer\":{\"id\":4005,\"tier\":\"silver\"},\"items\":[{\"sku\":\"A-100\",\"qty\":3}],\"total\":38.5}",
+    "headers": {"x-failure-kind":"transient","x-failure-reason":"timeout: inventory-service","x-failure-dependency":"inventory-service","x-attempt":"1","x-dlq-id":"8e654b37-a9dd-4600-a5a6-d730b6366d21","x-dlq-attempt":"5","traceparent":"00-156a975551f3230a5d235c7071409bc1-36fca2824287f724-01","x-request-id":"req-fdacf7c8"},
+    "consumer": "order-events",
+    "kind": "transient",
+    "reason": "timeout: inventory-service",
+    "dependency": "inventory-service",
+    "groupKey": "inventory-timeout",
+    "classifiedBy": "header",
+    "state": "recovered",
+    "resolvedBy": "self",
+    "attempts": [
+      {"at":"2026-11-22 03:09:30","outcome":"failed","message":"timeout: inventory-service","durationMs":30000},
+      {"at":"2026-11-22 03:10:00","outcome":"failed","message":"timeout: inventory-service","durationMs":30000},
+      {"at":"2026-11-22 03:11:00","outcome":"failed","message":"timeout: inventory-service","durationMs":30000},
+      {"at":"2026-11-22 03:13:00","outcome":"failed","message":"timeout: inventory-service","durationMs":30000},
+      {"at":"2026-11-22 03:21:00","outcome":"succeeded","durationMs":246}
+    ],
+    "expiresAt": "2026-11-25 03:09:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"03:08:54","level":"warn","text":"GET /inventory/stock?sku=A-100 timed out after 30000ms"},
+        {"at":"03:08:57","level":"error","text":"inventory-service: upstream connect error or disconnect/reset before headers"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=1a33ec08"
+    }
+  },
+  {
+    "id": "587ea978-1cec-4eea-a347-a2d31869b28b",
+    "receivedAt": "2026-11-22 00:22:00",
+    "ageMin": 698,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 2,
+    "offset": 15729,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-7673",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"1 014 551\"}",
+    "headers": {"x-failure-reason":"deadlock: ledger-db","x-failure-dependency":"ledger-db","x-attempt":"1","x-dlq-id":"587ea978-1cec-4eea-a347-a2d31869b28b","x-dlq-attempt":"2","traceparent":"00-d9d21c57364a723a6f4bef39a52111da-3889bbc5dd6e8eed-01","x-request-id":"req-bbc4439e"},
+    "consumer": "payment-events",
+    "kind": "transient",
+    "reason": "deadlock: ledger-db",
+    "dependency": "ledger-db",
+    "groupKey": "ledger-deadlock",
+    "classifiedBy": "inference",
+    "state": "recovered",
+    "resolvedBy": "self",
+    "attempts": [
+      {"at":"2026-11-22 00:22:30","outcome":"failed","message":"deadlock: ledger-db","durationMs":232},
+      {"at":"2026-11-22 00:28:00","outcome":"succeeded","durationMs":184}
+    ],
+    "expiresAt": "2026-11-25 00:22:00",
+    "enrichment": {
+      "status": "unavailable",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=e35a9382"
+    }
+  },
+  {
+    "id": "40a2df33-4235-4912-aa8f-7b096ee66ef0",
+    "receivedAt": "2026-11-21 23:09:00",
+    "ageMin": 771,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 5,
+    "offset": 66525,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-4135",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"1 014 551\"}",
+    "headers": {"x-failure-reason":"http 429: fraud-check","x-failure-dependency":"fraud-check","x-attempt":"1","x-dlq-id":"40a2df33-4235-4912-aa8f-7b096ee66ef0","x-dlq-attempt":"2","traceparent":"00-9fc7524f7641b5841dd59900b5c242ba-856f898c3412342e-01","x-request-id":"req-671d119f"},
+    "consumer": "payment-events",
+    "kind": "transient",
+    "reason": "http 429: fraud-check",
+    "dependency": "fraud-check",
+    "groupKey": "fraud-check-rate-limit",
+    "classifiedBy": "rule",
+    "state": "recovered",
+    "resolvedBy": "self",
+    "attempts": [
+      {"at":"2026-11-21 23:09:30","outcome":"failed","message":"http 429: fraud-check","durationMs":113},
+      {"at":"2026-11-21 23:15:00","outcome":"succeeded","durationMs":206}
+    ],
+    "expiresAt": "2026-11-24 23:09:00",
+    "enrichment": {
+      "status": "skipped",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=3b2f0f3c"
+    }
+  },
+  {
+    "id": "aef73b02-0b8f-4dd2-ab57-23655f31dba1",
+    "receivedAt": "2026-11-21 22:59:00",
+    "ageMin": 781,
+    "sourceTopic": "order-events.dlq",
+    "partition": 5,
+    "offset": 10606,
+    "originalTopic": "order-events",
+    "partitionKey": "cust-2647",
+    "payload": "{\"orderId\":\"ord_8f580\",\"customer\":{\"id\":4019,\"tier\":\"silver\"},\"items\":[{\"sku\":\"100-A\",\"qty\":2}],\"total\":90.3}",
+    "headers": {"x-failure-reason":"validation: sku format","x-attempt":"1","traceparent":"00-4ed2a391fbf77536d8097fe86ad9bd54-c4e65cbdb01387a4-01","x-request-id":"req-0321a57f"},
+    "consumer": "order-events",
+    "kind": "permanent",
+    "reason": "validation: sku format",
+    "groupKey": "sku-format-v1",
+    "classifiedBy": "rule",
+    "state": "recovered",
+    "resolvedBy": "runbook",
+    "attempts": [
+      {"at":"2026-11-21 23:03:00","outcome":"succeeded","durationMs":47}
+    ],
+    "runbook": "legacy-sku-format",
+    "expiresAt": "2026-11-24 22:59:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"22:58:57","level":"error","text":"ValidationError: items[0].sku does not match ^[A-Z]-\\d+$"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=3fb2b557"
+    }
+  },
+  {
+    "id": "f89fc895-a067-4764-acdf-1633d993d39f",
+    "receivedAt": "2026-11-21 19:03:00",
+    "ageMin": 1017,
+    "sourceTopic": "order-events.dlq",
+    "partition": 0,
+    "offset": 82256,
+    "originalTopic": "order-events",
+    "partitionKey": "cust-6063",
+    "payload": "{\"orderId\":\"ord_8f536\",\"customer\":{\"id\":4017,\"tier\":\"silver\"},\"items\":[{\"sku\":\"a_100\",\"qty\":3}],\"total\":82.9}",
+    "headers": {"x-failure-reason":"validation: sku format","x-attempt":"1","traceparent":"00-0ee20d7ea78d00e1665c45acb5e479ac-bb90985c92cbc283-01","x-request-id":"req-f480e2fc"},
+    "consumer": "order-events",
+    "kind": "permanent",
+    "reason": "validation: sku format",
+    "groupKey": "sku-format-v1",
+    "classifiedBy": "rule",
+    "state": "awaiting_approval",
+    "attempts": [],
+    "runbook": "legacy-sku-format",
+    "expiresAt": "2026-11-24 19:03:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"19:02:57","level":"error","text":"ValidationError: items[0].sku does not match ^[A-Z]-\\d+$"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=ce17001f"
+    }
+  },
+  {
+    "id": "b7e85282-6c77-48fd-a489-1e2c48be9154",
+    "receivedAt": "2026-11-21 12:49:00",
+    "ageMin": 1391,
+    "sourceTopic": "user-events.dlq",
+    "partition": 1,
+    "offset": 94941,
+    "originalTopic": "user-registrations",
+    "partitionKey": "cust-3711",
+    "payload": "{\"userId\":9029,\"email\":null,\"tenant\":\"test\"}",
+    "headers": {"x-failure-reason":"constraint: email not null","x-attempt":"1","traceparent":"00-47c1740b1c701702b9a2e6d87530e6c5-0a470c9c36f534d1-01","x-request-id":"req-1751b18f"},
+    "consumer": "user-events",
+    "kind": "permanent",
+    "reason": "constraint: email not null",
+    "groupKey": "email-null",
+    "classifiedBy": "group",
+    "state": "awaiting_operator",
+    "attempts": [],
+    "expiresAt": "2026-11-24 12:49:00",
+    "enrichment": {
+      "status": "not_found",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=d6b6f98d"
+    }
+  },
+  {
+    "id": "24ab6d96-9891-491b-aed9-d024ca0752af",
+    "receivedAt": "2026-11-21 08:08:00",
+    "ageMin": 1672,
+    "sourceTopic": "order-events.dlq",
+    "partition": 2,
+    "offset": 83296,
+    "originalTopic": "order-events",
+    "partitionKey": "cust-6812",
+    "payload": "{\"orderId\":\"ord_8f39f\",\"customer\":{\"id\":4006,\"tier\":\"gold\"},\"items\":[{\"sku\":\"A-100\",\"qty\":1}],\"total\":42.2}",
+    "headers": {"x-failure-kind":"transient","x-failure-reason":"timeout: inventory-service","x-failure-dependency":"inventory-service","x-attempt":"1","x-dlq-id":"24ab6d96-9891-491b-aed9-d024ca0752af","x-dlq-attempt":"2","traceparent":"00-30ebf27990a468a9c2100e62facc555f-5dbfba0149aec3a9-01","x-request-id":"req-452f12ad"},
+    "consumer": "order-events",
+    "kind": "transient",
+    "reason": "timeout: inventory-service",
+    "dependency": "inventory-service",
+    "groupKey": "inventory-timeout",
+    "classifiedBy": "header",
+    "state": "recovered",
+    "resolvedBy": "self",
+    "attempts": [
+      {"at":"2026-11-21 08:08:30","outcome":"failed","message":"timeout: inventory-service","durationMs":30000},
+      {"at":"2026-11-21 08:14:00","outcome":"succeeded","durationMs":105}
+    ],
+    "expiresAt": "2026-11-24 08:08:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"08:07:54","level":"warn","text":"GET /inventory/stock?sku=A-100 timed out after 30000ms"},
+        {"at":"08:07:57","level":"error","text":"inventory-service: upstream connect error or disconnect/reset before headers"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=fb48b8d3"
+    }
+  },
+  {
+    "id": "e70c76ba-d71c-4648-adc7-2eced0762d17",
+    "receivedAt": "2026-11-21 07:42:00",
+    "ageMin": 1698,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 0,
+    "offset": 50760,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-8814",
+    "payload": "[binary] 00 00 01 86 a0 0a 7b 22 69 64 22 3a",
+    "headers": {"x-failure-reason":"deserialization: unknown magic byte","x-attempt":"1","x-dlq-id":"e70c76ba-d71c-4648-adc7-2eced0762d17","x-dlq-attempt":"2","traceparent":"00-fbee82c13856882c759d45df78b5e07a-ab53e7ef382f047f-01","x-request-id":"req-263fae68"},
+    "consumer": "payment-events",
+    "kind": "unknown",
+    "reason": "deserialization: unknown magic byte",
+    "groupKey": "unknown-magic-byte",
+    "classifiedBy": "inference",
+    "state": "recovered",
+    "resolvedBy": "operator",
+    "attempts": [
+      {"at":"2026-11-21 07:42:30","outcome":"failed","message":"deserialization: unknown magic byte","durationMs":258},
+      {"at":"2026-11-21 07:48:00","outcome":"succeeded","durationMs":108}
+    ],
+    "expiresAt": "2026-11-24 07:42:00",
+    "enrichment": {
+      "status": "reused",
+      "logs": [
+        {"at":"07:41:57","level":"error","text":"DeserializationException: Unknown magic byte! (topic payments.transactions)"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=9bf051d1"
+    }
+  },
+  {
+    "id": "d355a59d-be8b-4609-a0f7-8fcbf7fff31a",
+    "receivedAt": "2026-11-21 07:28:00",
+    "ageMin": 1712,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 3,
+    "offset": 16716,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-1034",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"1 014 551\"}",
+    "headers": {"x-failure-reason":"schema: amount must be a number","x-attempt":"1","traceparent":"00-e96bcc382d7bbc9a6b4a850eaa596086-c2f5c158368246e9-01","x-request-id":"req-2b70d93c"},
+    "consumer": "payment-events",
+    "kind": "permanent",
+    "reason": "schema: amount must be a number",
+    "groupKey": "schema-amount-type",
+    "classifiedBy": "logs",
+    "state": "discarded",
+    "attempts": [],
+    "expiresAt": "2026-11-24 07:28:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"07:27:54","level":"error","text":"SchemaValidationException: $.amount: string found, number expected"},
+        {"at":"07:27:57","level":"warn","text":"payments-api v2.14 deployed 3 minutes before the first failure"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=6743b7e9"
+    }
+  },
+  {
+    "id": "f26e76ca-aa26-4202-a13e-7a8398b732dd",
+    "receivedAt": "2026-11-21 07:06:00",
+    "ageMin": 1734,
+    "sourceTopic": "user-events.dlq",
+    "partition": 0,
+    "offset": 21050,
+    "originalTopic": "user-registrations",
+    "partitionKey": "cust-1671",
+    "payload": "{\"userId\":9031,\"email\":null,\"tenant\":\"test\"}",
+    "headers": {"x-failure-reason":"constraint: email not null","x-attempt":"1","traceparent":"00-cdad99278ee67d3003a7a6d0f4d41d4d-724bc50beb18eff9-01","x-request-id":"req-4ac7f054"},
+    "consumer": "user-events",
+    "kind": "permanent",
+    "reason": "constraint: email not null",
+    "groupKey": "email-null",
+    "classifiedBy": "group",
+    "state": "discarded",
+    "attempts": [],
+    "expiresAt": "2026-11-24 07:06:00",
+    "enrichment": {
+      "status": "not_found",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=a1d68458"
+    }
+  },
+  {
+    "id": "6df6722d-06a3-4fd0-a70d-810354f0c0b8",
+    "receivedAt": "2026-11-21 06:41:00",
+    "ageMin": 1759,
+    "sourceTopic": "order-events.dlq",
+    "partition": 1,
+    "offset": 24880,
+    "originalTopic": "order-events",
+    "partitionKey": "cust-5679",
+    "payload": "{\"orderId\":\"ord_8f4ec\",\"customer\":{\"id\":4015,\"tier\":\"gold\"},\"items\":[{\"sku\":\"A100\",\"qty\":1}],\"total\":75.5}",
+    "headers": {"x-failure-reason":"validation: sku format","x-attempt":"1","traceparent":"00-526a7d51073738946a0c4fae7507242a-7a3888b82a3547e1-01","x-request-id":"req-df081b3a"},
+    "consumer": "order-events",
+    "kind": "permanent",
+    "reason": "validation: sku format",
+    "groupKey": "sku-format-v1",
+    "classifiedBy": "rule",
+    "state": "runbook_matched",
+    "attempts": [],
+    "runbook": "legacy-sku-format",
+    "expiresAt": "2026-11-24 06:41:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"06:40:57","level":"error","text":"ValidationError: items[0].sku does not match ^[A-Z]-\\d+$"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=f8585bc5"
+    }
+  },
+  {
+    "id": "26fec946-59f6-4628-a456-29d3eb8a5650",
+    "receivedAt": "2026-11-21 04:09:00",
+    "ageMin": 1911,
+    "sourceTopic": "user-events.dlq",
+    "partition": 1,
+    "offset": 89642,
+    "originalTopic": "user-registrations",
+    "partitionKey": "cust-5938",
+    "payload": "{\"userId\":9032,\"email\":null,\"tenant\":\"acme\"}",
+    "headers": {"x-failure-reason":"constraint: email not null","x-attempt":"1","traceparent":"00-7ede91560b2784cc14b24edb1d27c2b9-b8311be279ecce90-01","x-request-id":"req-99a7e388"},
+    "consumer": "user-events",
+    "kind": "permanent",
+    "reason": "constraint: email not null",
+    "groupKey": "email-null",
+    "classifiedBy": "group",
+    "state": "routed",
+    "attempts": [],
+    "expiresAt": "2026-11-24 04:09:00",
+    "enrichment": {
+      "status": "not_found",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=0a682d15"
+    }
+  },
+  {
+    "id": "e9da9fea-fff6-4ce0-a619-40240cc635cb",
+    "receivedAt": "2026-11-21 03:38:00",
+    "ageMin": 1942,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 4,
+    "offset": 23137,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-5436",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"2 300,00\"}",
+    "headers": {"x-failure-reason":"schema: amount must be a number","x-attempt":"1","traceparent":"00-5500c04b42e5dfd97ba066707e74105a-ca99eee6164968b8-01","x-request-id":"req-f0110aa9"},
+    "consumer": "payment-events",
+    "kind": "permanent",
+    "reason": "schema: amount must be a number",
+    "groupKey": "schema-amount-type",
+    "classifiedBy": "logs",
+    "state": "recovered",
+    "resolvedBy": "operator",
+    "attempts": [
+      {"at":"2026-11-21 03:42:00","outcome":"succeeded","durationMs":45}
+    ],
+    "expiresAt": "2026-11-24 03:38:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"03:37:54","level":"error","text":"SchemaValidationException: $.amount: string found, number expected"},
+        {"at":"03:37:57","level":"warn","text":"payments-api v2.14 deployed 3 minutes before the first failure"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=9debe4ff"
+    }
+  },
+  {
+    "id": "a47fb84c-aec7-40d6-ac07-5db21685cbed",
+    "receivedAt": "2026-11-21 02:09:00",
+    "ageMin": 2031,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 0,
+    "offset": 78879,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-2395",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"1 014 551\"}",
+    "headers": {"x-failure-reason":"http 429: fraud-check","x-failure-dependency":"fraud-check","x-attempt":"1","x-dlq-id":"a47fb84c-aec7-40d6-ac07-5db21685cbed","x-dlq-attempt":"3","traceparent":"00-203d86ee65eff6fbf60c719b0a391e63-2f290234ee04baf9-01","x-request-id":"req-c989e4c2"},
+    "consumer": "payment-events",
+    "kind": "transient",
+    "reason": "http 429: fraud-check",
+    "dependency": "fraud-check",
+    "groupKey": "fraud-check-rate-limit",
+    "classifiedBy": "rule",
+    "state": "expired",
+    "attempts": [
+      {"at":"2026-11-21 02:09:30","outcome":"failed","message":"http 429: fraud-check","durationMs":344},
+      {"at":"2026-11-21 02:10:00","outcome":"failed","message":"http 429: fraud-check","durationMs":377},
+      {"at":"2026-11-21 02:11:00","outcome":"failed","message":"http 429: fraud-check","durationMs":382}
+    ],
+    "expiresAt": "2026-11-24 02:09:00",
+    "enrichment": {
+      "status": "skipped",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=8fbfdebe"
+    }
+  },
+  {
+    "id": "4f3ab380-9c91-4da1-a651-11b4eb86401e",
+    "receivedAt": "2026-11-21 00:54:00",
+    "ageMin": 2106,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 0,
+    "offset": 54617,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-3918",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"2 300,00\"}",
+    "headers": {"x-failure-reason":"schema: amount must be a number","x-attempt":"1","traceparent":"00-3f512435088b9aa3975162e15dacca5f-1c24949023b551ac-01","x-request-id":"req-29cde853"},
+    "consumer": "payment-events",
+    "kind": "permanent",
+    "reason": "schema: amount must be a number",
+    "groupKey": "schema-amount-type",
+    "classifiedBy": "logs",
+    "state": "awaiting_operator",
+    "attempts": [],
+    "expiresAt": "2026-11-24 00:54:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"00:53:54","level":"error","text":"SchemaValidationException: $.amount: string found, number expected"},
+        {"at":"00:53:57","level":"warn","text":"payments-api v2.14 deployed 3 minutes before the first failure"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=dd736a70"
+    }
+  },
+  {
+    "id": "5b0895cd-83bd-48cc-a3ba-356456024fe2",
+    "receivedAt": "2026-11-20 18:23:00",
+    "ageMin": 2497,
+    "sourceTopic": "order-events.dlq",
+    "partition": 5,
+    "offset": 78380,
+    "originalTopic": "order-events",
+    "partitionKey": "cust-3042",
+    "payload": "{\"orderId\":\"ord_8f55b\",\"customer\":{\"id\":4018,\"tier\":\"gold\"},\"items\":[{\"sku\":\"A100\",\"qty\":1}],\"total\":86.6}",
+    "headers": {"x-failure-reason":"validation: sku format","x-attempt":"1","traceparent":"00-39a8a31a6c696a6946d3b66ac811bfb2-8668baaa15b70a57-01","x-request-id":"req-7753a8e6"},
+    "consumer": "order-events",
+    "kind": "permanent",
+    "reason": "validation: sku format",
+    "groupKey": "sku-format-v1",
+    "classifiedBy": "rule",
+    "state": "awaiting_approval",
+    "attempts": [],
+    "runbook": "legacy-sku-format",
+    "expiresAt": "2026-11-23 18:23:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"18:22:57","level":"error","text":"ValidationError: items[0].sku does not match ^[A-Z]-\\d+$"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=82053ba6"
+    }
+  },
+  {
+    "id": "d5cf4743-5856-45bf-a3b5-c241d14d360f",
+    "receivedAt": "2026-11-20 14:50:00",
+    "ageMin": 2710,
+    "sourceTopic": "user-events.dlq",
+    "partition": 0,
+    "offset": 92237,
+    "originalTopic": "user-registrations",
+    "partitionKey": "cust-6276",
+    "payload": "{\"userId\":9030,\"email\":null,\"tenant\":\"acme\"}",
+    "headers": {"x-failure-reason":"constraint: email not null","x-attempt":"1","traceparent":"00-4af490681e6988570dbe2793a52bb4b1-aaba400c691f5a0a-01","x-request-id":"req-6704c3b5"},
+    "consumer": "user-events",
+    "kind": "permanent",
+    "reason": "constraint: email not null",
+    "groupKey": "email-null",
+    "classifiedBy": "group",
+    "state": "awaiting_operator",
+    "attempts": [],
+    "expiresAt": "2026-11-23 14:50:00",
+    "enrichment": {
+      "status": "not_found",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=09c26d68"
+    }
+  },
+  {
+    "id": "ce9208b7-bd28-4163-ae9f-707bd2d587e7",
+    "receivedAt": "2026-11-20 07:03:00",
+    "ageMin": 3177,
+    "sourceTopic": "order-events.dlq",
+    "partition": 2,
+    "offset": 29645,
+    "originalTopic": "order-events",
+    "partitionKey": "cust-4823",
+    "payload": "{\"orderId\":\"ord_8f5a5\",\"customer\":{\"id\":4020,\"tier\":\"silver\"},\"items\":[{\"sku\":\"a_100\",\"qty\":3}],\"total\":94}",
+    "headers": {"x-failure-reason":"validation: sku format","x-attempt":"1","traceparent":"00-0338ef30c0e406819cfd0f7a7fcdbfb0-6db46cc29b919070-01","x-request-id":"req-41acbae8"},
+    "consumer": "order-events",
+    "kind": "permanent",
+    "reason": "validation: sku format",
+    "groupKey": "sku-format-v1",
+    "classifiedBy": "rule",
+    "state": "recovered",
+    "resolvedBy": "runbook",
+    "attempts": [
+      {"at":"2026-11-20 07:07:00","outcome":"succeeded","durationMs":213}
+    ],
+    "runbook": "legacy-sku-format",
+    "expiresAt": "2026-11-23 07:03:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"07:02:57","level":"error","text":"ValidationError: items[0].sku does not match ^[A-Z]-\\d+$"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=464f895a"
+    }
+  },
+  {
+    "id": "44520a68-14c3-459b-ab2f-c266e2456cb2",
+    "receivedAt": "2026-11-20 04:40:00",
+    "ageMin": 3320,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 3,
+    "offset": 12420,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-4830",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"2 300,00\"}",
+    "headers": {"x-failure-reason":"http 429: fraud-check","x-failure-dependency":"fraud-check","x-attempt":"1","x-dlq-id":"44520a68-14c3-459b-ab2f-c266e2456cb2","x-dlq-attempt":"2","traceparent":"00-497e29ee9e96e6f2679707fa21c17216-63a71fb221b0e83b-01","x-request-id":"req-98f0b4e9"},
+    "consumer": "payment-events",
+    "kind": "transient",
+    "reason": "http 429: fraud-check",
+    "dependency": "fraud-check",
+    "groupKey": "fraud-check-rate-limit",
+    "classifiedBy": "rule",
+    "state": "recovered",
+    "resolvedBy": "self",
+    "attempts": [
+      {"at":"2026-11-20 04:40:30","outcome":"failed","message":"http 429: fraud-check","durationMs":382},
+      {"at":"2026-11-20 04:46:00","outcome":"succeeded","durationMs":202}
+    ],
+    "expiresAt": "2026-11-23 04:40:00",
+    "enrichment": {
+      "status": "skipped",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=e62f5fba"
+    }
+  },
+  {
+    "id": "ef1026dc-bd80-40e9-aea0-73ebe4a9ca65",
+    "receivedAt": "2026-11-20 01:31:00",
+    "ageMin": 3509,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 5,
+    "offset": 86906,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-4551",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"2 300,00\"}",
+    "headers": {"x-failure-reason":"deadlock: ledger-db","x-failure-dependency":"ledger-db","x-attempt":"1","x-dlq-id":"ef1026dc-bd80-40e9-aea0-73ebe4a9ca65","x-dlq-attempt":"3","traceparent":"00-acc4ca5f33a33f0b9faa7f31e2300c5f-d50c49d6b485842c-01","x-request-id":"req-3688381b"},
+    "consumer": "payment-events",
+    "kind": "transient",
+    "reason": "deadlock: ledger-db",
+    "dependency": "ledger-db",
+    "groupKey": "ledger-deadlock",
+    "classifiedBy": "inference",
+    "state": "recovered",
+    "resolvedBy": "self",
+    "attempts": [
+      {"at":"2026-11-20 01:31:30","outcome":"failed","message":"deadlock: ledger-db","durationMs":252},
+      {"at":"2026-11-20 01:32:00","outcome":"failed","message":"deadlock: ledger-db","durationMs":47},
+      {"at":"2026-11-20 01:39:00","outcome":"succeeded","durationMs":37}
+    ],
+    "expiresAt": "2026-11-23 01:31:00",
+    "enrichment": {
+      "status": "unavailable",
+      "logs": [],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=af8e8d82"
+    }
+  },
+  {
+    "id": "88939584-a0a8-4551-a799-135a3bc4dd24",
+    "receivedAt": "2026-11-20 01:29:00",
+    "ageMin": 3511,
+    "sourceTopic": "order-events.dlq",
+    "partition": 3,
+    "offset": 96229,
+    "originalTopic": "order-events",
+    "partitionKey": "cust-2690",
+    "payload": "{\"orderId\":\"ord_8f3c4\",\"customer\":{\"id\":4007,\"tier\":\"silver\"},\"items\":[{\"sku\":\"A-100\",\"qty\":2}],\"total\":45.9}",
+    "headers": {"x-failure-kind":"transient","x-failure-reason":"timeout: inventory-service","x-failure-dependency":"inventory-service","x-attempt":"1","x-dlq-id":"88939584-a0a8-4551-a799-135a3bc4dd24","x-dlq-attempt":"4","traceparent":"00-4bd2d68cae08fc3199817b2d6b2af908-9b20baf7bf6be28c-01","x-request-id":"req-257a9187"},
+    "consumer": "order-events",
+    "kind": "transient",
+    "reason": "timeout: inventory-service",
+    "dependency": "inventory-service",
+    "groupKey": "inventory-timeout",
+    "classifiedBy": "header",
+    "state": "recovered",
+    "resolvedBy": "self",
+    "attempts": [
+      {"at":"2026-11-20 01:29:30","outcome":"failed","message":"timeout: inventory-service","durationMs":30000},
+      {"at":"2026-11-20 01:30:00","outcome":"failed","message":"timeout: inventory-service","durationMs":30000},
+      {"at":"2026-11-20 01:31:00","outcome":"failed","message":"timeout: inventory-service","durationMs":30000},
+      {"at":"2026-11-20 01:39:00","outcome":"succeeded","durationMs":208}
+    ],
+    "expiresAt": "2026-11-23 01:29:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"01:28:54","level":"warn","text":"GET /inventory/stock?sku=A-100 timed out after 30000ms"},
+        {"at":"01:28:57","level":"error","text":"inventory-service: upstream connect error or disconnect/reset before headers"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=ed9ee59c"
+    }
+  },
+  {
+    "id": "9f4a2226-b4a8-44d5-a1b8-0e8fdfb7f5f7",
+    "receivedAt": "2026-11-19 10:01:00",
+    "ageMin": 4439,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 1,
+    "offset": 23059,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-3619",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"1 014 551\"}",
+    "headers": {"x-failure-reason":"schema: amount must be a number","x-attempt":"1","traceparent":"00-9bc46ad5b1f3f7b7afafe702d8b83c2b-c87fb49b8785dde8-01","x-request-id":"req-c21ddf28"},
+    "consumer": "payment-events",
+    "kind": "permanent",
+    "reason": "schema: amount must be a number",
+    "groupKey": "schema-amount-type",
+    "classifiedBy": "logs",
+    "state": "awaiting_operator",
+    "attempts": [],
+    "expiresAt": "2026-11-22 10:01:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"10:00:54","level":"error","text":"SchemaValidationException: $.amount: string found, number expected"},
+        {"at":"10:00:57","level":"warn","text":"payments-api v2.14 deployed 3 minutes before the first failure"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=434c37f4"
+    }
+  },
+  {
+    "id": "dbe25819-c0c1-43f6-a102-ae1edb894a75",
+    "receivedAt": "2026-11-17 05:38:00",
+    "ageMin": 7582,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 5,
+    "offset": 84674,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-3163",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"2 300,00\"}",
+    "headers": {"x-failure-reason":"schema: amount must be a number","x-attempt":"1","traceparent":"00-446a7866c23acc4a132d10ca42272398-762ee28179381776-01","x-request-id":"req-730461bf"},
+    "consumer": "payment-events",
+    "kind": "permanent",
+    "reason": "schema: amount must be a number",
+    "groupKey": "schema-amount-type",
+    "classifiedBy": "logs",
+    "state": "awaiting_operator",
+    "attempts": [],
+    "expiresAt": "2026-11-20 05:38:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"05:37:54","level":"error","text":"SchemaValidationException: $.amount: string found, number expected"},
+        {"at":"05:37:57","level":"warn","text":"payments-api v2.14 deployed 3 minutes before the first failure"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=22d3599d"
+    }
+  },
+  {
+    "id": "d96d8939-7884-4c86-a81d-20c20ac603e1",
+    "receivedAt": "2026-11-14 10:30:00",
+    "ageMin": 11610,
+    "sourceTopic": "payment-events.dlq",
+    "partition": 2,
+    "offset": 13076,
+    "originalTopic": "payments.transactions",
+    "partitionKey": "cust-7265",
+    "payload": "{\"source_account\":\"DE70700500000005193886\",\"dst_account\":\"DE88700500000006052885\",\"currency\":\"EUR\",\"amount\":\"1 014 551\"}",
+    "headers": {"x-failure-reason":"schema: amount must be a number","x-attempt":"1","traceparent":"00-b158b368ffd453be6a43d0fec7bc1aa0-ebb05575c562f002-01","x-request-id":"req-e76a88d3"},
+    "consumer": "payment-events",
+    "kind": "permanent",
+    "reason": "schema: amount must be a number",
+    "groupKey": "schema-amount-type",
+    "classifiedBy": "logs",
+    "state": "awaiting_operator",
+    "attempts": [],
+    "expiresAt": "2026-11-17 10:30:00",
+    "enrichment": {
+      "status": "enriched",
+      "logs": [
+        {"at":"10:29:54","level":"error","text":"SchemaValidationException: $.amount: string found, number expected"},
+        {"at":"10:29:57","level":"warn","text":"payments-api v2.14 deployed 3 minutes before the first failure"}
+      ],
+      "logsUrl": "https://grafana.internal/explore?query=request_id",
+      "traceUrl": "https://grafana.internal/explore?traceId=cf2e5735"
+    }
+  }
+]

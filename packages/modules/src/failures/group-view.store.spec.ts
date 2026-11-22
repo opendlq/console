@@ -9,7 +9,7 @@ const setup = (key = 'schema-amount-type') => {
 };
 
 describe('GroupViewStore', () => {
-  it('lists the open messages of the group and filters them by text', () => {
+  it('lista as mensagens abertas do grupo e filtra por texto', () => {
     const view = setup();
     expect(view.messages().every((m) => m.groupKey === 'schema-amount-type')).toBe(true);
     expect(view.group()?.count).toBe(view.messages().length);
@@ -18,7 +18,7 @@ describe('GroupViewStore', () => {
     expect(view.visible().length).toBeLessThan(view.messages().length);
   });
 
-  it('keeps the active message after it is discarded, with its new state, and drops it from the selection', () => {
+  it('mantém a mensagem ativa depois de descartada, com o novo estado, e a tira da seleção', () => {
     const view = setup();
     const m = view.messages()[0];
     view.activeId.set(m.id);
@@ -29,7 +29,7 @@ describe('GroupViewStore', () => {
     expect(view.messages().some((x) => x.id === m.id)).toBe(false);
   });
 
-  it('offers the original topics of the consumer as replay targets', () => {
+  it('oferece como destino de replay o tópico original do consumer', () => {
     expect(setup().targets()).toEqual(['payments.transactions']);
   });
 });

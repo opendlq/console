@@ -1,0 +1,17 @@
+<div class="page">
+  <odlq-page-header title="Recovery" />
+
+  <odlq-alert tone="info" heading="Declared in files">
+    Retry, breaker, probe and drain come from <code>Policy</code> resources. This view is read-only: change them with <code>opendlq apply</code>.
+  </odlq-alert>
+
+  <div class="breakers">
+    @for (v of store.views(); track v.breaker.dependency) {
+      <odlq-breaker-card [breaker]="v.breaker" [held]="v.held" />
+    }
+  </div>
+
+  <odlq-card heading="Policy · order-events" [flush]="true">
+    <odlq-key-value-table [rows]="store.policy()" keyHeader="Field" caption="Effective policy" />
+  </odlq-card>
+</div>

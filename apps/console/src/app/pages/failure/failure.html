@@ -1,0 +1,76 @@
+@if (store.group(); as g) {
+  <div class="page">
+    <odlq-page-header [title]="g.reason" [crumbs]="[{ label: 'Failures' }]" (crumbSelect)="router.navigateByUrl('/failures')">
+      <div actions class="actions">
+        <button odlq-button variant="outline" (click)="ask(store.messages(), reclassifyOpen)">Reclassify all</button>
+        <button odlq-button variant="primary" (click)="ask(store.messages(), replayOpen)">Replay all {{ g.count }}</button>
+      </div>
+    </odlq-page-header>
+
+    <odlq-inline-stats [items]="stats()" />
+    <odlq-kpi-row>
+      <odlq-kpi-card label="Open messages" [value]="g.count" tone="danger" />
+      <odlq-kpi-card label="Oldest" [value]="oldest()" tone="warning" />
+      <odlq-kpi-card label="Arrivals · last 12h"><odlq-sparkline [values]="g.trend" [width]="160" [height]="32" label="Arrivals per hour" /></odlq-kpi-card>
+    </odlq-kpi-row>
+
+    @if (g.runbook) {
+      <odlq-alert tone="info" [heading]="'Runbook ' + g.runbook + ' matches this cause'">
+        It acts within its guardrails. Messages waiting for approval are on the Runbooks page.
+      </odlq-alert>
+    } @else {
+      <odlq-alert tone="info" heading="No runbook covers this cause">
+        Replay, edit or discard to resolve it. After the same action is applied to this cause 3 times, OpenDLQ suggests a runbook.
+      </odlq-alert>
+    }
+
+    @if (store.messages()[0]; as sample) {
+      <odlq-card heading="Correlated logs"><odlq-log-extract [enrichment]="sample.enrichment" /></odlq-card>
+    }
+
+    <odlq-filter-bar [(query)]="store.query" placeholder="Search by key, id or payload…" />
+    <odlq-bulk-action-bar
+      [count]="store.selection().length"
+      [editable]="store.selection().length === 1"
+      (replay)="ask(store.selection(), replayOpen)"
+      (editReplay)="ask(store.selection(), editOpen)"
+      (reclassify)="ask(store.selection(), reclassifyOpen)"
+      (discard)="ask(store.selection(), discardOpen)"
+      (cleared)="store.selection.set([])"
+    />
+    <odlq-message-table [messages]="store.visible()" [(selection)]="store.selection" [activeMessage]="store.active()" (messageClick)="inspect($event)" />
+    <odlq-pagination [total]="store.visible().length" [pageSize]="50" />
+  </div>
+} @else {
+  <div class="page">
+    <odlq-page-header [title]="key()" [crumbs]="[{ label: 'Failures' }]" (crumbSelect)="router.navigateByUrl('/failures')" />
+    <odlq-empty-state title="No open messages for this cause" description="Every message was recovered, replayed or discarded. The audit log keeps the history." />
+  </div>
+}
+
+<odlq-message-detail-drawer
+  [(open)]="inspectOpen"
+  [message]="store.active()"
+  [history]="store.history()"
+  placement="container"
+  (replay)="ask([$event], replayOpen)"
+  (editReplay)="ask([$event], editOpen)"
+  (reclassify)="ask([$event], reclassifyOpen)"
+  (discard)="ask([$event], discardOpen)"
+/>
+<odlq-replay-drawer [(open)]="replayOpen" [messages]="pending()" [targets]="targets()" placement="container" (replay)="replay($event)" />
+<odlq-replay-drawer [(open)]="editOpen" [messages]="pending()" [targets]="targets()" [edit]="true" placement="container" (replay)="editAndReplay($event)" />
+<odlq-reclassify-dialog
+  [(open)]="reclassifyOpen"
+  [count]="pending().length"
+  noun="messages"
+  [current]="store.group()?.kind ?? 'permanent'"
+  (reclassify)="reclassify($event)"
+/>
+<odlq-confirm-dialog
+  [(open)]="discardOpen"
+  heading="Discard messages"
+  confirmLabel="Discard"
+  [message]="'Discard ' + pending().length + ' message(s)? They are closed with a recorded reason and are no longer retried or replayed.'"
+  (confirmed)="discard()"
+/>

@@ -1,5 +1,5 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import type { DlqMessage, FailureKind } from '@opendlq/ui';
+import type { DlqMessage, FailureKind, Transition } from '@opendlq/ui';
 import { FailuresStore } from './failures.store';
 
 /** Estado da tela de uma causa: mensagens do grupo, busca, seleção, mensagem aberta e ações sobre mensagens. */
@@ -21,6 +21,8 @@ export class GroupViewStore {
   });
   /** Mensagem aberta no inspetor; acompanha as mudanças de estado (mesmo depois de descartada). */
   readonly active = computed(() => this.failures.messages().find((m) => m.id === this.activeId()) ?? null);
+  /** Mudanças de estado da mensagem aberta, da mais recente para a mais antiga. */
+  readonly history = computed<Transition[]>(() => (this.active() ? this.failures.historyOf(this.active()!) : []));
   /** Destinos possíveis de replay: o tópico original do consumer. */
   readonly targets = computed(() => [...new Set(this.messages().map((m) => m.originalTopic))]);
 

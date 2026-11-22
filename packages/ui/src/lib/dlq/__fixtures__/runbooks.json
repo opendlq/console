@@ -1,0 +1,67 @@
+[
+  {
+    "name": "legacy-sku-format",
+    "consumer": "order-events",
+    "match": "reason == \"validation: sku format\"",
+    "action": "transform_replay",
+    "status": "supervised",
+    "usedThisHour": 0,
+    "maxPerHour": 500,
+    "approvalsDone": 0,
+    "approvalsRequired": 3,
+    "expires": "2027-03-01",
+    "daysLeft": 99
+  },
+  {
+    "name": "drop-test-tenant",
+    "consumer": "user-events",
+    "match": "payload.tenant == \"test\"",
+    "action": "discard",
+    "status": "automatic",
+    "usedThisHour": 212,
+    "maxPerHour": 1000,
+    "approvalsDone": 3,
+    "approvalsRequired": 3,
+    "expires": "2026-12-05",
+    "daysLeft": 13
+  },
+  {
+    "name": "ledger-reconcile-route",
+    "consumer": "payment-events",
+    "match": "dependency == \"ledger-db\" && attempts >= 5",
+    "action": "route",
+    "status": "supervised",
+    "usedThisHour": 4,
+    "maxPerHour": 200,
+    "approvalsDone": 2,
+    "approvalsRequired": 3,
+    "expires": "2027-01-15",
+    "daysLeft": 54
+  },
+  {
+    "name": "email-null-discard",
+    "consumer": "user-events",
+    "match": "group_key == \"email-null\"",
+    "action": "discard",
+    "status": "suggested",
+    "usedThisHour": 0,
+    "maxPerHour": 100,
+    "approvalsDone": 0,
+    "approvalsRequired": 3,
+    "expires": "2027-02-01",
+    "daysLeft": 71
+  },
+  {
+    "name": "old-currency-fix",
+    "consumer": "payment-events",
+    "match": "reason == \"schema: currency\"",
+    "action": "transform_replay",
+    "status": "expired",
+    "usedThisHour": 0,
+    "maxPerHour": 300,
+    "approvalsDone": 3,
+    "approvalsRequired": 3,
+    "expires": "2026-11-15",
+    "daysLeft": -7
+  }
+]

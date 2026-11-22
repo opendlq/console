@@ -1,0 +1,48 @@
+[
+  {
+    "name": "order-events-stuck",
+    "when": "max_age > 2h",
+    "severity": "page",
+    "audience": "operational",
+    "notify": ["pagerduty-oncall"]
+  },
+  {
+    "name": "new-permanent-group",
+    "when": "poisoned",
+    "severity": "page",
+    "audience": "operational",
+    "notify": ["slack-oncall"],
+    "dedupe": "1h"
+  },
+  {
+    "name": "circuit-open-too-long",
+    "when": "circuit_opened && duration > 30m",
+    "severity": "page",
+    "audience": "operational",
+    "notify": ["pagerduty-oncall"]
+  },
+  {
+    "name": "inflow-anomaly",
+    "when": "finding.detector == \"rate\" and finding.score >= 3",
+    "severity": "report",
+    "audience": "operational",
+    "notify": ["slack-oncall"],
+    "dedupe": "2h"
+  },
+  {
+    "name": "recurring-causes",
+    "when": "recurrence.episodes >= 3 and recurrence.cost_trend == \"growing\"",
+    "severity": "report",
+    "audience": "decision",
+    "notify": ["slack-eng-priorities"],
+    "schedule": "weekly"
+  },
+  {
+    "name": "runbook-expiring",
+    "when": "runbook_expiring",
+    "severity": "report",
+    "audience": "decision",
+    "notify": ["slack-eng-priorities"],
+    "schedule": "weekly"
+  }
+]

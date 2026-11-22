@@ -1,0 +1,30 @@
+[
+  {
+    "cause": "sku-format-v1",
+    "episodes": 4,
+    "last": "2026-11-22",
+    "cost": 113,
+    "trend": "growing"
+  },
+  {
+    "cause": "inventory-timeout",
+    "episodes": 3,
+    "last": "2026-11-22",
+    "cost": 76,
+    "trend": "stable"
+  },
+  {
+    "cause": "schema-amount-type",
+    "episodes": 1,
+    "last": "2026-11-22",
+    "cost": 333,
+    "trend": "growing"
+  },
+  {
+    "cause": "email-null",
+    "episodes": 2,
+    "last": "2026-11-21",
+    "cost": 64,
+    "trend": "falling"
+  }
+]

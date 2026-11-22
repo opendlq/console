@@ -1,9 +1,10 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import {
-  CONSUMERS, DLQ_MESSAGES, OPEN_STATES, baselineHistory, funnel, groupMessages, isOpen, selfRecoveryRate,
-  type DlqMessage, type FailureGroup, type FailureKind, type MessageState, type Transition,
+  OPEN_STATES, funnel, groupMessages, isOpen, messageHistory, selfRecoveryRate,
+  type DlqMessage, type FailureKind, type MessageState, type Transition,
 } from '@opendlq/ui';
 import { AuditStore } from '../audit/audit.store';
+import messages from './__fixtures__/failure-messages.json';
 
 export interface MoveAudit {
   action: string;
@@ -15,9 +16,9 @@ export interface MoveAudit {
 export class FailuresStore {
   private readonly audit = inject(AuditStore);
 
-  /** ponytail: dados de exemplo; troque por chamadas à API do OpenDLQ. */
-  readonly messages = signal<DlqMessage[]>(DLQ_MESSAGES);
-  readonly consumers = CONSUMERS;
+  // ponytail: fixture; troque por inject(FailuresService) do @opendlq/core quando existir.
+  readonly messages = signal(messages as DlqMessage[]);
+  readonly consumers = computed(() => [...new Set(this.messages().map((m) => m.consumer))]);
 
   readonly query = signal('');
   readonly consumer = signal<string | null>(null);
@@ -48,6 +49,15 @@ export class FailuresStore {
   readonly awaitingOperator = computed(() => this.stateCounts().awaiting_operator ?? 0);
   /** Idade (min) da mensagem aberta mais antiga: o alerta principal, pois a profundidade esconde as antigas. */
   readonly maxAgeMin = computed(() => this.open().reduce((max, m) => Math.max(max, m.ageMin), 0));
+  /** Chegadas por hora nas últimas 12 horas (a última posição é a hora corrente). */
+  readonly arrivalsPerHour = computed(() => {
+    const counts = Array<number>(12).fill(0);
+    for (const m of this.messages()) {
+      const hour = Math.floor(m.ageMin / 60);
+      if (hour < 12) counts[11 - hour] += 1;
+    }
+    return counts;
+  });
   readonly funnel = computed(() => funnel(this.messages()));
   readonly selfRecovery = computed(() => selfRecoveryRate(this.funnel()));
 
@@ -71,7 +81,7 @@ export class FailuresStore {
 
   /** Histórico: o que os controllers fizeram + o que operadores, agentes e runbooks fizeram depois. */
   historyOf(m: DlqMessage): Transition[] {
-    return [...this.audit.forMessage(m.id), ...baselineHistory(m).reverse()];
+    return [...this.audit.forMessage(m.id), ...messageHistory(m).reverse()];
   }
 
   /** Replay para o destino (padrão: o tópico original), com limite de taxa. Só afeta mensagens abertas. */
