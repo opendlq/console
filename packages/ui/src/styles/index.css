@@ -1,0 +1,4 @@
+/* Entrada única de estilos globais do design system. */
+@import './tokens.css';
+@import './themes.css';
+@import './base.css';

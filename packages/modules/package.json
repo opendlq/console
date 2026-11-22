@@ -1,0 +1,17 @@
+{
+  "name": "@opendlq/modules",
+  "version": "0.0.1",
+  "description": "OpenDLQ — lógica e estado dos módulos do console (stores com signals). Testes ficam aqui, não nas páginas.",
+  "private": true,
+  "peerDependencies": {
+    "@angular/core": "^22.3.0",
+    "@opendlq/ui": "*"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/public-api.ts"
+  },
+  "devDependencies": {
+    "@opendlq/ui": "workspace:*"
+  }
+}

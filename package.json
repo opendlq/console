@@ -1,0 +1,51 @@
+{
+  "name": "opendlq",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "dev": "ng serve console",
+    "build": "ng build ui && ng build modules && ng build console",
+    "storybook": "ng run ui:storybook",
+    "build-storybook": "ng run ui:build-storybook",
+    "test": "ng test ui --watch=false && ng test modules --watch=false && ng test console --watch=false",
+    "typecheck": "tsc -p packages/ui/.storybook/tsconfig.json --noEmit"
+  },
+  "private": true,
+  "engines": {
+    "node": "^22.22.3 || >=24.15.0"
+  },
+  "packageManager": "pnpm@11.3.0",
+  "dependencies": {
+    "@angular/animations": "^22.3.0",
+    "@angular/cdk": "^22.3.0",
+    "@angular/common": "^22.3.0",
+    "@angular/compiler": "^22.3.0",
+    "@angular/core": "^22.3.0",
+    "@angular/forms": "^22.3.0",
+    "@angular/platform-browser": "^22.3.0",
+    "@angular/platform-browser-dynamic": "^22.3.0",
+    "@angular/router": "^22.3.0",
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@lucide/angular": "^1.77.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "^0.16.3"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^22.3.0",
+    "@angular/build": "^22.3.0",
+    "@angular/cli": "^22.3.0",
+    "@angular/compiler-cli": "^22.3.0",
+    "@compodoc/compodoc": "^2.0.0",
+    "@storybook/addon-a11y": "^10.6.8",
+    "@storybook/addon-docs": "^10.6.8",
+    "@storybook/angular": "^10.6.8",
+    "jsdom": "^31.0.0",
+    "ng-packagr": "^22.3.0",
+    "prettier": "^3.8.1",
+    "storybook": "^10.6.8",
+    "typescript": "~6.0.2",
+    "vitest": "^5.0.0"
+  }
+}

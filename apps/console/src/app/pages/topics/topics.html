@@ -1,0 +1,14 @@
+<div class="page">
+  <odlq-page-header title="Dead letter topics" />
+  <odlq-input class="search" icon="search" [(value)]="store.query" placeholder="Search a topic" label="Search a topic" />
+  <odlq-data-table
+    [columns]="columns"
+    [rows]="store.rows()"
+    [rowKey]="rowKey"
+    [clickable]="true"
+    caption="Dead letter topics"
+    (rowClick)="open($event)"
+  >
+    <ng-template odlqCell="health" let-v="value"><odlq-status-badge [status]="v" /></ng-template>
+  </odlq-data-table>
+</div>

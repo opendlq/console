@@ -1,0 +1,125 @@
+/* Temas. Claro = padrão; escuro via <html data-theme="dark"> (ver OdlqThemeService). */
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --ui-bg: #ffffff;
+  --ui-surface: #ffffff;
+  --ui-surface-muted: #f6f8f3;
+  --ui-surface-hover: #edf2e8;
+  --ui-surface-sunken: #f9faf7;
+  --ui-border: #e2e8dc;
+  --ui-border-strong: #cbd5c2;
+
+  --ui-text: #101c14;
+  --ui-text-muted: #4a5a4f;
+  --ui-text-subtle: #5b6b60;
+  --ui-text-on-primary: #d9f99d;
+
+  --ui-primary: #14532d;
+  --ui-primary-hover: #0f4023;
+  --ui-primary-soft: #e9f7d4;
+  --ui-primary-soft-fg: #14532d;
+  --ui-link: #166534;
+
+  --ui-success: #137333;
+  --ui-success-soft: #e5f6eb;
+  --ui-success-solid: #22c55e;
+  --ui-danger: #c42318;
+  --ui-danger-soft: #fdecea;
+  --ui-danger-border: #f6c6c1;
+  --ui-warning: #b45309;
+  --ui-warning-soft: #fef3e1;
+  --ui-info: #2563eb;
+  --ui-info-soft: #e8f0fe;
+  --ui-neutral-soft: #edf1e9;
+
+  --ui-overlay: rgba(8, 24, 14, 0.35);
+  --ui-shadow-sm: 0 1px 2px rgba(8, 30, 16, 0.06);
+  --ui-shadow-md: 0 4px 16px rgba(8, 30, 16, 0.1);
+  --ui-shadow-lg: 0 16px 48px rgba(8, 30, 16, 0.2);
+  --ui-focus-ring: 0 0 0 3px rgba(101, 163, 13, 0.35);
+
+  --ui-code-bg: #f7f9f4;
+  --ui-code-text: #1b2a20;
+  --ui-code-key: #1a6a3c;
+  --ui-code-string: #b01f6f;
+  --ui-code-number: #b83a0a;
+  --ui-code-bool: #0a6b66;
+  --ui-code-punct: #556259;
+  --ui-code-lineno: #556259;
+  --ui-diff-add: #dcf3e2;
+  --ui-diff-del: #fbe0dc;
+
+  --ui-chart-1: #1f7a46;
+  --ui-chart-2: #a3e635;
+  --ui-chart-3: #2bb5a6;
+  --ui-chart-4: #f5c84c;
+  --ui-chart-5: #f59a4c;
+  --ui-chart-6: #ef6f8e;
+  --ui-chart-7: #5aa9f5;
+  --ui-chart-8: #8f98a8;
+  --ui-chart-grid: #e0e6da;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --ui-bg: #07110b;
+  --ui-surface: #0d1a12;
+  --ui-surface-muted: #112218;
+  --ui-surface-hover: #17301f;
+  --ui-surface-sunken: #0a150e;
+  --ui-border: #1b3324;
+  --ui-border-strong: #2a4a37;
+
+  --ui-text: #e8f3ea;
+  --ui-text-muted: #a3bfab;
+  --ui-text-subtle: #86a592;
+  --ui-text-on-primary: #0b2412;
+
+  --ui-primary: #a3e635;
+  --ui-primary-hover: #bef264;
+  --ui-primary-soft: rgba(163, 230, 53, 0.14);
+  --ui-primary-soft-fg: #bef264;
+  --ui-link: #a3e635;
+
+  --ui-success: #4ade80;
+  --ui-success-soft: rgba(74, 222, 128, 0.14);
+  --ui-success-solid: #22c55e;
+  --ui-danger: #f87171;
+  --ui-danger-soft: rgba(248, 113, 113, 0.14);
+  --ui-danger-border: rgba(248, 113, 113, 0.35);
+  --ui-warning: #fbbf24;
+  --ui-warning-soft: rgba(251, 191, 36, 0.14);
+  --ui-info: #60a5fa;
+  --ui-info-soft: rgba(96, 165, 250, 0.14);
+  --ui-neutral-soft: #17301f;
+
+  --ui-overlay: rgba(0, 0, 0, 0.6);
+  --ui-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --ui-shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
+  --ui-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.65);
+  --ui-focus-ring: 0 0 0 3px rgba(163, 230, 53, 0.4);
+
+  --ui-code-bg: #0a150e;
+  --ui-code-text: #d6e6da;
+  --ui-code-key: #bef264;
+  --ui-code-string: #f27ea6;
+  --ui-code-number: #ffb86b;
+  --ui-code-bool: #6fd6c8;
+  --ui-code-punct: #9db8a6;
+  --ui-code-lineno: #9db8a6;
+  --ui-diff-add: rgba(74, 222, 128, 0.16);
+  --ui-diff-del: rgba(248, 113, 113, 0.16);
+
+  --ui-chart-1: #a3e635;
+  --ui-chart-2: #4ade80;
+  --ui-chart-3: #2dd4bf;
+  --ui-chart-4: #facc15;
+  --ui-chart-5: #fb923c;
+  --ui-chart-6: #f472b6;
+  --ui-chart-7: #60a5fa;
+  --ui-chart-8: #a78bfa;
+  --ui-chart-grid: #1f3a2b;
+}

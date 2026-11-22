@@ -1,0 +1,43 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introdução/Bem-vindo" />
+
+# OpenDLQ UI
+
+Design system em **Angular 22** (standalone, zoneless, signals, `OnPush`) para construir um console de **Dead Letter Queues** no estilo do Conduktor Console. CSS puro + _design tokens_, sem Tailwind nem Material.
+
+## Como usar
+
+```ts
+import { OdlqButton, OdlqMessageTable, OdlqThemeService } from '@opendlq/ui';
+```
+
+Importe os estilos globais uma vez (`angular.json` → `styles`):
+
+```json
+"packages/ui/src/styles/index.css",
+"node_modules/@angular/cdk/overlay-prebuilt.css"
+```
+
+O tema vive em `<html data-theme="light|dark">`. Use `OdlqThemeService` ou o seletor **Tema** na barra do Storybook.
+
+## O que tem aqui
+
+| Seção | Conteúdo |
+|---|---|
+| **Fundação** | Tokens `--ui-*` (cores, raio, sombra, tipografia, gráficos) e ícones curados (Lucide) |
+| **Primitivos** | Button, Input, Select, Checkbox, Toggle, Radio, Segmented, Badge, Chip, Kbd, Tooltip, Avatar, Alert, FormField… |
+| **Navegação** | AppShell, Sidebar, Topbar, PageHeader, Tabs, Pagination, CommandPalette |
+| **Dados** | KPI, DataTable, KeyValueTable, EmptyState, Card, Accordion, Progress, CodeBlock/Editor, DiffViewer |
+| **Overlays** | Drawer, Modal, ConfirmDialog, Menu, Toast |
+| **Gráficos** | BarChart (simples/empilhado), LineChart, Legend — SVG próprio |
+| **DLQ** | FilterBar, MessageTable, MessageDetailDrawer, ReprocessDrawer, JsFilterDrawer, ProduceForm, TopicConfigPanel, SchemaDiff, ConnectorPanel, RiskCard, PermissionMatrix, ClusterOverview, StatusBadge, BulkActionBar, AttemptTimeline |
+| **Páginas** | Telas completas (Consume, Produce, Configuration, Schema diff, Kafka Connect, Home, Insights, Permissions, Chargeback, Consumer group) em claro e escuro |
+
+## Convenções
+
+- Seletor `odlq-*`, classes `Odlq*`, um arquivo por componente, template e estilos inline.
+- Entradas com `input()`, saídas com `output()`, estado bidirecional com `model()` (`[(value)]`, `[(open)]`).
+- Controles de formulário implementam `ControlValueAccessor` e funcionam com `ngModel` e Reactive Forms.
+- Dados de exemplo em `mocks.ts`, compartilhados por stories e pelo app.
+- Tetos conhecidos estão marcados com comentários `ponytail:` (ex.: editor de código por `textarea`, diff O(n·m)).

@@ -1,0 +1,9 @@
+{
+  "name": "console",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@opendlq/ui": "workspace:*",
+    "@opendlq/modules": "workspace:*"
+  }
+}

@@ -1,0 +1,31 @@
+/* Tokens independentes de tema (tipografia, raios, espaçamento, movimento). */
+:root {
+  --ui-font-sans: 'Inter Variable', Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ui-font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --ui-text-2xs: 10px;
+  --ui-text-xs: 11px;
+  --ui-text-sm: 12px;
+  --ui-text-md: 13px;
+  --ui-text-lg: 14px;
+  --ui-text-xl: 16px;
+  --ui-text-2xl: 20px;
+  --ui-text-3xl: 28px;
+
+  --ui-radius-xs: 3px;
+  --ui-radius-sm: 4px;
+  --ui-radius-md: 6px;
+  --ui-radius-lg: 8px;
+  --ui-radius-xl: 12px;
+  --ui-radius-pill: 999px;
+
+  --ui-sidebar-w: 220px;
+  --ui-sidebar-w-collapsed: 56px;
+  --ui-topbar-h: 56px;
+  --ui-control-h-sm: 28px;
+  --ui-control-h-md: 32px;
+  --ui-control-h-lg: 40px;
+
+  --ui-transition: 120ms cubic-bezier(0.2, 0, 0, 1);
+  --ui-z-drawer: 1000;
+}

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 64" role="img" aria-label="OpenDLQ">
+  <title>OpenDLQ</title>
+  <style>
+    .t { fill: #101c14; font: 500 38px/1 Inter, 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif; letter-spacing: -0.02em; }
+    @media (prefers-color-scheme: dark) { .t { fill: #e8f3ea; } }
+  </style>
+  <rect width="64" height="64" rx="16" fill="#14532d"/>
+  <g fill="none" stroke="#ecfccb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="11" y="16" width="38" height="27" rx="6"/>
+    <path d="m14 21 16 12 16-12"/>
+  </g>
+  <circle cx="47" cy="46" r="11.5" fill="#a3e635" stroke="#14532d" stroke-width="4"/>
+  <g transform="translate(40.6 39.6) scale(.53)" fill="none" stroke="#0b2412" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 14 4 9l5-5"/>
+    <path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>
+  </g>
+  <text class="t" x="80" y="45"><tspan>Open</tspan><tspan font-weight="800">DLQ</tspan></text>
+</svg>
