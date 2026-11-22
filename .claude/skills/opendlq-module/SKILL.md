@@ -18,15 +18,15 @@ packages/modules/src/<modulo>/
    └─ <nome>.json             # dados de exemplo: só JSON, nenhum .ts
 ```
 
-Exemplo real: `topics/` (`topics.store.ts` + spec) e `topic-messages.store.ts`.
+Exemplo real: `failures/` (`failures.store.ts` + spec, `group-list.store.ts`, `group-view.store.ts`).
 
 ## Store
 
 - `@Injectable`, estado em `signal`, derivados em `computed`, mutação com `update`/`set` (imutável: `[...l, x]`, `{ ...m, status }`).
 - Métodos **puros em relação à tela**: devolvem o resultado (`reprocessSelected(): number`) e a página decide o toast. Sem `Router`, `document`, toast, `window`.
 - Escopo:
-  - estado **por tela** (seleção, filtros, item ativo): `@Injectable()` sem `providedIn`; a página declara `providers: [Store]`. Ex.: `TopicMessagesStore`.
-  - estado **global** (lista compartilhada): `@Injectable({ providedIn: 'root' })`. Ex.: `TopicsStore`.
+  - estado **por tela** (seleção, filtros, item ativo): `@Injectable()` sem `providedIn`; a página declara `providers: [Store]`. Ex.: `GroupViewStore`.
+  - estado **global** (lista compartilhada): `@Injectable({ providedIn: 'root' })`. Ex.: `FailuresStore`.
 - Dependências por `inject()`, nunca por construtor.
 - De `@opendlq/ui` importe **só tipos e funções puras de `domain.ts`** (`import type { DlqStatus } from '@opendlq/ui'`). Nunca componente nem mock.
 - Funções de regra que não precisam de estado (`topicHealth`) ficam **exportadas fora da classe**, para testar sem instanciar.

@@ -90,9 +90,3 @@ Só quando a primeira store precisar de dado real. Espelhe `packages/modules`:
 7. Modo: `provideOpendlqCore({ mode })` registra o interceptor de fixtures **só** em `mode: 'fixtures'`; as fixtures da fase 1 migram para `core/src/<recurso>/__fixtures__/` como handlers.
 8. Configurações de build `fixtures` e `http` no console e scripts `dev:fixtures` / `dev:http` no `package.json` raiz.
 9. Migrar a store: troca `signal(FIXTURE)` por `inject(Service)` e ganha `loading`/`error`. Playwright segue `opendlq-e2e`.
-
-## Dívida conhecida (não replicar)
-
-- Os `__fixtures__/*.fixture.ts` atuais (`ui/src/lib/dlq/__fixtures__/dlq.fixture.ts`, `modules/src/failures/__fixtures__/failures.fixture.ts`, `modules/src/__fixtures__/time.ts` e os de `audit`, `recovery`, `runbooks`) ainda são TypeScript com gerador (`lcg`, `hex`, `between`, `ts`), e o mesmo gerador está duplicado em `ui` e `modules`. Destino: JSON puro e nenhum `.ts` em `__fixtures__/` (regras acima).
-
-Ao tocar nesses arquivos, migre; ao criar novos, siga a regra.

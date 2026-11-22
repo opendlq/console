@@ -87,4 +87,4 @@ pnpm build       # ui + modules + console
 pnpm dev         # http://localhost:4200
 ```
 
-Exemplos reais: `pages/topics/` (lista) e `pages/topic/` (detalhe com drawers), com a lógica em `packages/modules/src/topics/`.
+Exemplos reais: `pages/failures/` (lista de causas) e `pages/failure/` (uma causa, com drawers e diálogos), com a lógica em `packages/modules/src/failures/`.

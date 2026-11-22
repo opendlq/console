@@ -2,11 +2,11 @@
 
 <img src="packages/ui/assets/opendlq-logo.svg" alt="OpenDLQ" height="48" />
 
-Monorepo **pnpm** com **Angular 22** e **Storybook 10** para construir um console de tópicos **Dead Letter Queue**, com a UI baseada no Conduktor Console (claro e escuro).
+Monorepo **pnpm** com **Angular 22** e **Storybook 10** para o console do **OpenDLQ**, o plano de controle de Dead Letter Queues: classifica falhas (transitórias × permanentes), recupera sozinho o que dá, agrupa por causa raiz, aplica runbooks e audita tudo. Paleta verde-escuro com verde-limão, em claro e escuro.
 
 ```
 apps/console      app Angular (shell + rotas lazy); cada página = .ts + .html + .css
-packages/ui       @opendlq/ui — design system (componentes, tokens, mocks) + Storybook
+packages/ui       @opendlq/ui — design system (componentes, tokens, domínio) + Storybook
 packages/modules  @opendlq/modules — lógica e estado dos módulos (stores) + testes
 ```
 
@@ -35,8 +35,8 @@ pnpm typecheck        # stories e componentes
 | Dados | KPI, DataTable, KeyValueTable, EmptyState, Card, Accordion, Progress, CodeBlock/Editor, DiffViewer |
 | Overlays | Drawer, Modal, ConfirmDialog, Menu, Toast |
 | Gráficos | BarChart (simples/empilhado), LineChart, Legend |
-| DLQ | FilterBar, MessageTable, MessageDetailDrawer, ReprocessDrawer, JsFilterDrawer, ProduceForm, TopicConfigPanel, SchemaDiff, ConnectorPanel, RiskCard, PermissionMatrix, ClusterOverview, StatusBadge, BulkActionBar, AttemptTimeline |
-| Páginas | Consume, Produce, Configuration, Schema diff, Kafka Connect, Home, Insights, Permissions, Chargeback, Consumer group |
+| DLQ | StateBadge, KindBadge, StateStrip, Funnel, FilterBar, GroupTable, MessageTable, BulkActionBar, MessageDetailDrawer, ReplayDrawer, ReclassifyDialog, LogExtract, AttemptTimeline, HeaderList, BreakerCard, RunbookCard, RiskCard, AuditLog, Sparkline |
+| Páginas | Overview, Failures, Failure (uma causa), Recovery, Runbooks, Insights, Alerts, Audit log, Configuration |
 
 ## Usando a lib
 
@@ -48,7 +48,13 @@ Estilos globais (já configurados em `angular.json`): fontes `@fontsource-variab
 
 ## Páginas
 
+Rotas do app: `/overview`, `/failures`, `/failures/:key`, `/recovery`, `/runbooks`, `/audit`. Insights, Alerts e Configuration existem como stories de tela (ainda sem rota).
+
 Páginas só compõem UI: `apps/console/src/app/pages/<nome>/<nome>.{ts,html,css}`, sem template/estilo inline e **sem teste**. Estado, regras e testes ficam em `packages/modules`. A convenção está na skill `.claude/skills/opendlq-page`.
+
+## Dados de exemplo
+
+Fixtures são **JSON escrito à mão** em `__fixtures__/` ao lado de quem usa (módulos e stories), sem gerador e sem `.ts`; agrupamentos, funil e histórico são derivados por funções de `domain.ts`. "Agora" nas fixtures é 2026-11-22 12:00 UTC. Regras em `.claude/skills/opendlq-architecture`.
 
 ## Decisões
 
@@ -56,4 +62,3 @@ Páginas só compõem UI: `apps/console/src/app/pages/<nome>/<nome>.{ts,html,css
 - Componentes standalone, zoneless, `OnPush`, signals (`input`/`output`/`model`).
 - TypeScript fixado em `~6.0` (Angular 22 não suporta 7.x).
 - Gráficos, highlight de código e diff são código próprio. Os tetos estão marcados com `// ponytail:` (editor por `textarea` → CodeMirror 6; diff O(n·m); gráficos → ECharts se precisar de zoom/brush).
-- Filtros JS do app de exemplo ficam só como chips: avalie-os no servidor.

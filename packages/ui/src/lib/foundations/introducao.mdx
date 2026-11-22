@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # OpenDLQ UI
 
-Design system em **Angular 22** (standalone, zoneless, signals, `OnPush`) para construir um console de **Dead Letter Queues** no estilo do Conduktor Console. CSS puro + _design tokens_, sem Tailwind nem Material.
+Design system em **Angular 22** (standalone, zoneless, signals, `OnPush`) para construir o console do **OpenDLQ**, o plano de controle de Dead Letter Queues: classifica falhas (transitórias ou permanentes), recupera sozinho o que dá, agrupa por causa raiz, aplica runbooks e registra tudo na auditoria. Paleta verde-escuro com verde-limão, em claro e escuro. CSS puro + _design tokens_, sem Tailwind nem Material.
 
 ## Como usar
 
@@ -31,13 +31,13 @@ O tema vive em `<html data-theme="light|dark">`. Use `OdlqThemeService` ou o sel
 | **Dados** | KPI, DataTable, KeyValueTable, EmptyState, Card, Accordion, Progress, CodeBlock/Editor, DiffViewer |
 | **Overlays** | Drawer, Modal, ConfirmDialog, Menu, Toast |
 | **Gráficos** | BarChart (simples/empilhado), LineChart, Legend — SVG próprio |
-| **DLQ** | FilterBar, MessageTable, MessageDetailDrawer, ReprocessDrawer, JsFilterDrawer, ProduceForm, TopicConfigPanel, SchemaDiff, ConnectorPanel, RiskCard, PermissionMatrix, ClusterOverview, StatusBadge, BulkActionBar, AttemptTimeline |
-| **Páginas** | Telas completas (Consume, Produce, Configuration, Schema diff, Kafka Connect, Home, Insights, Permissions, Chargeback, Consumer group) em claro e escuro |
+| **DLQ** | StateBadge, KindBadge, StateStrip, Funnel, FilterBar, GroupTable, MessageTable, BulkActionBar, MessageDetailDrawer, ReplayDrawer, ReclassifyDialog, LogExtract, AttemptTimeline, HeaderList, BreakerCard, RunbookCard, RiskCard, AuditLog, Sparkline |
+| **Páginas** | Telas completas (Overview, Failures, Failure, Recovery, Runbooks, Insights, Alerts, Audit log, Configuration) em claro e escuro |
 
 ## Convenções
 
 - Seletor `odlq-*`, classes `Odlq*`, um arquivo por componente, template e estilos inline.
 - Entradas com `input()`, saídas com `output()`, estado bidirecional com `model()` (`[(value)]`, `[(open)]`).
 - Controles de formulário implementam `ControlValueAccessor` e funcionam com `ngModel` e Reactive Forms.
-- Dados de exemplo em `mocks.ts`, compartilhados por stories e pelo app.
+- Dados de exemplo das stories em `__fixtures__/*.json` (só JSON, fora do `public-api`). O domínio (`MessageState`, `groupMessages`, `funnel`…) fica em `domain.ts`.
 - Tetos conhecidos estão marcados com comentários `ponytail:` (ex.: editor de código por `textarea`, diff O(n·m)).
