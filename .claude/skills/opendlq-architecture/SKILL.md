@@ -87,6 +87,6 @@ Só quando a primeira store precisar de dado real. Espelhe `packages/modules`:
 4. `package.json` raiz: acrescentar `ng build core` antes de `modules` em `build`, e `ng test core --watch=false` em `test`.
 5. `modules/package.json` e `apps/console/package.json`: dependência `"@opendlq/core": "workspace:*"`.
 6. Conteúdo: services `@Injectable({ providedIn: 'root' })`, `inject()` (não construtor), `HttpClient`/`httpResource`, config por `InjectionToken`, DTOs tipados. Nada de estado de tela (isso é da store).
-7. Modo: `provideOpendlqCore({ mode })` registra o interceptor de fixtures **só** em `mode: 'fixtures'`; as fixtures da fase 1 migram para `core/src/<recurso>/__fixtures__/` como handlers.
+7. Modo: `provideOpendlqCore({ mode })` registra o interceptor de fixtures **só** em `mode: 'fixtures'`; os JSON da fase 1 migram para `core/src/<recurso>/__fixtures__/` e entram na tabela `core/src/fixtures.ts`.
 8. Configurações de build `fixtures` e `http` no console e scripts `dev:fixtures` / `dev:http` no `package.json` raiz.
 9. Migrar a store: troca `signal(FIXTURE)` por `inject(Service)` e ganha `loading`/`error`. Playwright segue `opendlq-e2e`.
